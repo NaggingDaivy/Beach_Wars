@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
 
     public float Health_Amount = 20f;
+    public int ScoreValue = 10;
 
 	// Use this for initialization
 	void Start () {
@@ -18,13 +20,24 @@ public class Target : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        print("On Trigger : " + other.gameObject.name);
-        
-        Projectile pro = other.GetComponent<Projectile>();
 
-        if(pro)
+
+        Projectile projectile = other.GetComponent<Projectile>();
+
+        if(projectile)
         {
-            
+            Health_Amount -= projectile.Damage;
+
+
+
+            if (Health_Amount <= 0)
+            {
+
+                GameObject.FindGameObjectWithTag("Score").GetComponent<Score>().UpdateScore(ScoreValue);
+                
+                DestroyObject(this.gameObject);
+            }
+                
         }
-    }
+   }
 }

@@ -8,13 +8,17 @@ public class SpaceShip : MonoBehaviour, IControllable
 
     public Vector3 DefaultSpeed;
     public Vector3 MaxSpeed;
+    public GameObject LaserMesh;
+    public float LaserShootDistance = 10f;
+    public float LaserShootSpeed = 10f;
 
     private Vector3 m_Speed;
+
+    //private Transform _laserProjection;
 
     private bool _inputEnabled = false;
     private bool _hasJustSwitched = false;
 
-    private bool _fireLaser = false;
 
 
     // Use this for initialization
@@ -22,12 +26,13 @@ public class SpaceShip : MonoBehaviour, IControllable
     {
 
         m_Speed = DefaultSpeed;
+        //_laserProjection = new GameObject().transform;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
 
 
 
@@ -75,11 +80,6 @@ public class SpaceShip : MonoBehaviour, IControllable
                 //_fireLaser = true;
                 //Vector3 laserProjection = this.transform.position + transform.rotation * new Vector3(0, 0, 30);
 
-
-
-
-
-
             }
 
 
@@ -101,24 +101,51 @@ public class SpaceShip : MonoBehaviour, IControllable
         _inputEnabled = false;
     }
 
+
     private IEnumerator Fire()
     {
-        GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube2.transform.position = this.transform.position + transform.rotation * new Vector3(0, 0, 10);
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = this.transform.position + transform.rotation * new Vector3(-7, 0, 0);
+        //GameObject LaserMesh = Instantiate(Resources.Load("LaserMesh",typeof(GameObject))) as GameObject;
+        //UpdateLaser();
+        Transform laserProjection = new GameObject().transform;
 
-        //cube.transform.LookAt(laserProjection);
-        cube2.transform.LookAt(this.transform.position);
-        cube.transform.LookAt(cube2.transform.position);
+        laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
+        
 
-        //Vector3.Lerp(cube.transform.position, laserProjection, Time.deltaTime * 2.0f);
+        GameObject laserMesh = Instantiate(LaserMesh);
 
-        while (Vector3.Distance(cube.transform.position, cube2.transform.position) > 0.05f)
+        laserMesh.transform.position = this.transform.position + transform.rotation * new Vector3(-7, 0, 0);
+       
+
+        laserMesh.transform.LookAt(laserProjection);
+
+        laserMesh.transform.Rotate(-90, 0, 0);
+
+        while (Vector3.Distance(laserMesh.transform.position, laserProjection.transform.position) > 0.005f)
         {
-            cube.transform.position = Vector3.Lerp(cube.transform.position, cube2.transform.position, 0.05f);
+            laserMesh.transform.position = Vector3.Lerp(laserMesh.transform.position, laserProjection.transform.position, Time.deltaTime * LaserShootSpeed);
+            
             yield return null;
         }
+
+        Destroy(laserMesh.gameObject);
+        Destroy(laserProjection.gameObject);
+
+        //GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube2.transform.position = this.transform.position + transform.rotation * new Vector3(0, 0, 10);
+        //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube.transform.position = this.transform.position + transform.rotation * new Vector3(-7, 0, 0);
+
+        ////cube.transform.LookAt(laserProjection);
+        //cube2.transform.LookAt(this.transform.position);
+        //cube.transform.LookAt(cube2.transform.position);
+
+        ////Vector3.Lerp(cube.transform.position, laserProjection, Time.deltaTime * 2.0f);
+
+        //while (Vector3.Distance(cube.transform.position, cube2.transform.position) > 0.05f)
+        //{
+        //    cube.transform.position = Vector3.Lerp(cube.transform.position, cube2.transform.position, 0.05f);
+        //    yield return null;
+        //}
 
 
 

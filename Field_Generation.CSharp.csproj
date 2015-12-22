@@ -72,8 +72,10 @@
     <Compile Include="Assets\Code\Projectile\Laser.cs" />
     <Compile Include="Assets\Code\Projectile\Projectile.cs" />
     <Compile Include="Assets\Code\Target.cs" />
-    <Compile Include="Assets\Code\TerrainGenerator.cs" />
-    <Compile Include="Assets\Code\WaveMovement.cs" />
+    <Compile Include="Assets\Code\Terrain\TerrainGenerator.cs" />
+    <Compile Include="Assets\Code\Wave\WaveMovement.cs" />
+    <Compile Include="Assets\Score.cs" />
+    <Compile Include="Assets\testLookat.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

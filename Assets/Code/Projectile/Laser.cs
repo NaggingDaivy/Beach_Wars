@@ -3,20 +3,12 @@ using System.Collections;
 
 public class Laser : Projectile {
 
-    void Reset()
+    public Laser()
     {
-        Damage = 10f;
+        Damage = 20f;
     }
-    
-   // Use this for initialization
-	void Start ()
-	{
-	    
+   
+   
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    
 }

@@ -22,6 +22,7 @@ public class TerrainGenerator : MonoBehaviour
     public float PlatformTransitionWidth = 20.0f;
     public int PlatformPosX = 0;
     public int PlatformPosZ = 0;
+    public int SquareScale = 25;
 
     //Texture
     public Texture2D AlbedoTexture = null;
@@ -30,7 +31,7 @@ public class TerrainGenerator : MonoBehaviour
 
     //Color
     public Color BeachColor = Color.yellow;
-    public Color PlatformColor = Color.blue;
+
     public Color TerrainHighColor = Color.white;
     public Color TerrainLowColor = Color.green;
     public float ColorScale = 0.5f;
@@ -50,10 +51,10 @@ public class TerrainGenerator : MonoBehaviour
             amplitude *= Gain;
         }
 
-       
 
-        return noise ;
-        
+
+        return noise;
+
     }
 
 
@@ -65,8 +66,8 @@ public class TerrainGenerator : MonoBehaviour
         //BEACH
 
         beachWeight = 1.0f;
-        beachWeight *= Mathf.Clamp01(px           / BeachRadius);          //if (px <= BeachRadius) {weight *= px / BeachRadius;}
-        beachWeight *= Mathf.Clamp01(pz           / BeachRadius);          //if (pz <= BeachRadius) {weight *= px / BeachRadius;}
+        beachWeight *= Mathf.Clamp01(px / BeachRadius);          //if (px <= BeachRadius) {weight *= px / BeachRadius;}
+        beachWeight *= Mathf.Clamp01(pz / BeachRadius);          //if (pz <= BeachRadius) {weight *= px / BeachRadius;}
         beachWeight *= Mathf.Clamp01((SizeX - px) / BeachRadius);          //if (SizeX - px <= BeachRadius) {weight *= px / BeachRadius;}
         beachWeight *= Mathf.Clamp01((SizeZ - pz) / BeachRadius);          //if (SizeZ - pz <= BeachRadius) {weight *= px / BeachRadius;}
 
@@ -76,9 +77,9 @@ public class TerrainGenerator : MonoBehaviour
 
         beachWeight = 1.0f - beachWeight; // poids de la plage par rapport à la montange, 1 = montagne
 
-       // Mathf.Lerp(BeachHeight, height, beachWeight);
+        // Mathf.Lerp(BeachHeight, height, beachWeight);
 
-        
+
         //END BEACH
 
         //PLATFORM
@@ -95,7 +96,7 @@ public class TerrainGenerator : MonoBehaviour
 
         return Mathf.Lerp(height, PlatformHeight, platformWeight);
 
-     
+
 
     }
 
@@ -112,10 +113,39 @@ public class TerrainGenerator : MonoBehaviour
 
         pix = new Color[TextureWidth * TextureHeight];
 
+        Color PlatformColor = Color.black;
+
+        int squareScale = TextureWidth / SquareScale;
+
+        int counterSquareWidth = 1, counterSquareHeight = 1;
+
         for (int z = 0; z < TextureWidth; z++)
         {
+            if (counterSquareWidth > squareScale)
+            {
+                counterSquareWidth = 0;
+
+                if (PlatformColor == Color.white)
+                    PlatformColor = Color.black;
+                else
+                    PlatformColor = Color.white;
+            }
+
+            counterSquareHeight = 0;
+
             for (int x = 0; x < TextureHeight; x++)
             {
+                if (counterSquareHeight > squareScale)
+                {
+                    counterSquareHeight = 0;
+
+                    if (PlatformColor == Color.white)
+                        PlatformColor = Color.black;
+                    else
+                        PlatformColor = Color.white;
+                }
+
+               
                 int index = z * TextureWidth + x;
                 float xUV = x / (float)(TextureWidth - 1.0f);
                 float zUV = z / (float)(TextureHeight - 1.0f);
@@ -137,7 +167,11 @@ public class TerrainGenerator : MonoBehaviour
 
 
                 pix[index] = final;
+
+                ++counterSquareHeight;
             }
+
+            ++counterSquareWidth;
         }
 
         AlbedoTexture.SetPixels(pix);
@@ -178,7 +212,7 @@ public class TerrainGenerator : MonoBehaviour
 
                 float platformWeight, beachWeight;
 
-                py = GetHeight(px, pz,out platformWeight,out beachWeight); 
+                py = GetHeight(px, pz, out platformWeight, out beachWeight);
 
                 u = (float)x / (float)SizeX; // a changer quand x vaut 0, quand x vaut sizeX ça vaut 1
                 v = (float)z / (float)SizeZ; // a changer idem v

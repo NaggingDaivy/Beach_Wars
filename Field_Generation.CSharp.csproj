@@ -75,6 +75,7 @@
     <Compile Include="Assets\Code\Terrain\TerrainGenerator.cs" />
     <Compile Include="Assets\Code\Wave\WaveMovement.cs" />
     <Compile Include="Assets\Score.cs" />
+    <Compile Include="Assets\Spotlight.cs" />
     <Compile Include="Assets\testLookat.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />

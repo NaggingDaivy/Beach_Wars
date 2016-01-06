@@ -69,7 +69,7 @@ public class SpaceShip : MonoBehaviour, IControllable
             {
                 DisableInput();
 
-                GameObject.Find("Tractopelle").GetComponent<Tractopelle>().EnableInput();
+                GameObject.Find("tracto_low").GetComponent<Tractopelle>().EnableInput();
             }
             else if (_hasJustSwitched)
                 _hasJustSwitched = false;

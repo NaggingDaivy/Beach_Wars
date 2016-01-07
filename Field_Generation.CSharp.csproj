@@ -76,6 +76,7 @@
     <Compile Include="Assets\Code\Target.cs" />
     <Compile Include="Assets\Code\Terrain\TerrainGenerator.cs" />
     <Compile Include="Assets\Code\Wave\WaveMovement.cs" />
+    <Compile Include="Assets\Creature\Creature.cs" />
     <Compile Include="Assets\Meca\Meca.cs" />
     <Compile Include="Assets\Tractopelle\Tractopelle.cs" />
   </ItemGroup>

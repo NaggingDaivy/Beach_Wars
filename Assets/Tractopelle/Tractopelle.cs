@@ -11,12 +11,14 @@ public class Tractopelle : BasePlayer //,IControllable
     // public vars to connect scene elements
     public GameObject MeshTractopelle; // main tank
 
-    //public Material MaterialTrackLeft; // shaders tracks
-    //public Material MaterialTrackRight;
+    public Material MaterialTrackLeft; // shaders tracks
+    public Material MaterialTrackRight;
 
     public GameObject MeshPelleLevel3;
     public GameObject MeshPelleLevel2;
     public GameObject MeshPelleLevel1;
+
+    public GameObject Gyrophare;
 
 
 
@@ -155,13 +157,14 @@ public class Tractopelle : BasePlayer //,IControllable
         MeshTractopelle.transform.Translate(0, 0, SpeedMove_v);
         MeshTractopelle.transform.Rotate(0, SpeedTurnMove, 0);
 
+        print(OffsetTrackLeft);
         // sliding of textures tracks
         OffsetTrackLeft = OffsetTrackLeft + (SpeedMove_v + SpeedMove_h) / TrackLenght;
         OffsetTrackRight = OffsetTrackRight + (SpeedMove_v - SpeedMove_h) / TrackLenght;
 
         // apply sliding on shaders
-        //MaterialTrackLeft.SetTextureOffset("_MainTex", new Vector2(OffsetTrackLeft, 0));
-        //MaterialTrackRight.SetTextureOffset("_MainTex", new Vector2(OffsetTrackRight, 0));
+        MaterialTrackLeft.SetTextureOffset("_MainTex", new Vector2(OffsetTrackLeft, 0));
+        MaterialTrackRight.SetTextureOffset("_MainTex", new Vector2(OffsetTrackRight, 0));
 
         //Sound of wheel
 
@@ -179,10 +182,15 @@ public class Tractopelle : BasePlayer //,IControllable
         //AudioWheel.pitch = 1.0f + AudioTrack;
     }
 
-    
+    void DirtLevel()
+    {
+        Gyrophare.transform.Rotate(0,5,0);
+    }
 
-
-
+    void TurnGyrophare()
+    {
+        
+    }
 
     // main loop (each time)
     void Update()
@@ -191,6 +199,10 @@ public class Tractopelle : BasePlayer //,IControllable
         {
             TractopelleMove();
             Pelle();
+            DirtLevel();
+            TurnGyrophare();
+
+
 
             CheckChangePlayer();
 

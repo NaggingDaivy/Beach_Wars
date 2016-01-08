@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class Tractopelle : MonoBehaviour,IControllable
+public class Tractopelle : BasePlayer //,IControllable
 {
 
     // Declarations
@@ -24,8 +24,8 @@ public class Tractopelle : MonoBehaviour,IControllable
 
     private int m_PelleLevel = 3;
 
-    private bool _inputEnabled = false;
-    private bool _hasJustSwitched = false;
+    //private bool _inputEnabled = false;
+    //private bool _hasJustSwitched = false;
 
     //private Animator TankAnim;
     //private AudioSource AudioBoum, AudioTurret, AudioWheel;
@@ -37,6 +37,7 @@ public class Tractopelle : MonoBehaviour,IControllable
     // initialisation (one time)
     void Start()
     {
+        DisableInput();
         // Textures offsets init
         OffsetTrackLeft = 0f;
         OffsetTrackRight = 0f;
@@ -68,7 +69,7 @@ public class Tractopelle : MonoBehaviour,IControllable
     {
         //Keyboards inputs values for turret 
 
-        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.GetKeyDown(KeyCode.JoystickButton0))
         {
             if (m_PelleLevel - 1 == 0)
                 m_PelleLevel = 3;
@@ -191,33 +192,35 @@ public class Tractopelle : MonoBehaviour,IControllable
             TractopelleMove();
             Pelle();
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
-            {
-                DisableInput();
-                GameObject.Find("SpaceShip").GetComponent<SpaceShip>().EnableInput();
+            CheckChangePlayer();
 
-            }
-            else if (_hasJustSwitched)
-            {
-                _hasJustSwitched = false;
-            }
+            //if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
+            //{
+            //    DisableInput();
+            //    GameObject.Find("SpaceShip").GetComponent<SpaceShip>().EnableInput();
+
+            //}
+            //else if (_hasJustSwitched)
+            //{
+            //    _hasJustSwitched = false;
+            //}
         }
 
 
 
     }
 
-    public void EnableInput()
-    {
-        _inputEnabled = true;
-        _hasJustSwitched = true;
-        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollowPlayer>().Player = this.transform;
+    //public void EnableInput()
+    //{
+    //    _inputEnabled = true;
+    //    _hasJustSwitched = true;
+    //    GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollowPlayer>().Player = this.transform;
 
-    }
+    //}
 
-    public void DisableInput()
-    {
-        _inputEnabled = false;
-    }
+    //public void DisableInput()
+    //{
+    //    _inputEnabled = false;
+    //}
 }
 

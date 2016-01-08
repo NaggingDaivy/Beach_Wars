@@ -5,7 +5,7 @@ public class SpaceShip : BasePlayer //, IControllable
 {
 
 
-
+    public GameObject Cockpit;
     public Vector3 DefaultSpeed;
     public Vector3 MaxSpeed;
     public GameObject LaserMesh;
@@ -13,6 +13,7 @@ public class SpaceShip : BasePlayer //, IControllable
     public float LaserShootSpeed = 10f;
 
     private Vector3 m_Speed;
+    private bool isCockpitOpened = false;
 
     //private Transform _laserProjection;
 
@@ -23,7 +24,7 @@ public class SpaceShip : BasePlayer //, IControllable
     {
         EnableInput();
         m_Speed = DefaultSpeed;
-        
+
 
         //_laserProjection = new GameObject().transform;
 
@@ -40,41 +41,35 @@ public class SpaceShip : BasePlayer //, IControllable
             float value = Time.deltaTime;
             this.transform.position += (this.transform.rotation * m_Speed * Time.deltaTime);
 
-            //transform.Rotate(40,0,0);
+
 
             //Quaternion RotationX =  transform.rotation * Quaternion.Euler(Input.GetAxis("Vertical") * 40, 0, 0);
 
             //Quaternion RotationY = transform.rotation * Quaternion.Euler(0, Input.GetAxis("Horizontal") * 40, 0);
 
-            //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationX, 0.05f);
 
-            //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationY, 0.05f);
-
-            //if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
-            //{
-            //    CameraFollowPlayer test = _camera.GetComponent<CameraFollowPlayer>();
-            //    test.CanRotate = false;
-            //}
-            //else
-            //{
-            //    CameraFollowPlayer test = _camera.GetComponent<CameraFollowPlayer>();
-            //    test.CanRotate = true;
-            //}
-
-          
-            transform.Rotate(2*Input.GetAxis("Vertical"),0 ,0,Space.Self);
+            transform.Rotate(2 * Input.GetAxis("Vertical"), 0, 0, Space.Self);
 
             transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
 
+            CheckChangePlayer();
 
-            //if (transform.rotation.z != 0)
-            //{
-            //    transform.Rotate(0, 0, -transform.rotation.z, Space.Self);
-            //}
-            
-            
+            if (Input.GetKeyDown(KeyCode.JoystickButton0))
+            {
+                StartCoroutine("Fire");
+                //_fireLaser = true;
+                //Vector3 laserProjection = this.transform.position + transform.rotation * new Vector3(0, 0, 30);
 
-      
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.JoystickButton3))
+            {
+                StartCoroutine("OpenCloseCockpit");
+            }
+
+
+
 
             //if (Input.GetKey(KeyCode.JoystickButton4)) // left bumper
             //{
@@ -106,15 +101,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
             //print("Y : " + Input.GetAxis("D-Pad Y Axis"));
             //print("X : " + Input.GetAxis("D-Pad X Axis"));
-            CheckChangePlayer();
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton0))
-            {
-                StartCoroutine("Fire");
-                //_fireLaser = true;
-                //Vector3 laserProjection = this.transform.position + transform.rotation * new Vector3(0, 0, 30);
-
-            }
 
 
 
@@ -143,12 +130,12 @@ public class SpaceShip : BasePlayer //, IControllable
         Transform laserProjection = new GameObject().transform;
 
         laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
-        
+
 
         GameObject laserMesh = Instantiate(LaserMesh);
 
         laserMesh.transform.position = this.transform.position + transform.rotation * new Vector3(-7, 0, 0);
-       
+
 
         laserMesh.transform.LookAt(laserProjection);
 
@@ -157,7 +144,7 @@ public class SpaceShip : BasePlayer //, IControllable
         while (Vector3.Distance(laserMesh.transform.position, laserProjection.transform.position) > 0.005f)
         {
             laserMesh.transform.position = Vector3.Lerp(laserMesh.transform.position, laserProjection.transform.position, Time.deltaTime * LaserShootSpeed);
-            
+
             yield return null;
         }
 
@@ -184,4 +171,49 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
     }
+
+    private IEnumerator OpenCloseCockpit()
+    {
+        float time = 0.5f;
+
+
+        float elapsedTime = 0.0f;
+        if (!isCockpitOpened)
+        {
+
+            Quaternion from = Cockpit.transform.localRotation;
+            Quaternion to = Quaternion.Euler(0, 0, 0);
+
+            while (elapsedTime < time)
+            {
+                Cockpit.transform.localRotation = Quaternion.Lerp(from, to, elapsedTime / time);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+
+            isCockpitOpened = true;
+
+        }
+        else
+        {
+
+
+            Quaternion from = Cockpit.transform.localRotation;
+            Quaternion to = Quaternion.Euler(90, 0, 0);
+
+            while (elapsedTime < time)
+            {
+                Cockpit.transform.localRotation = Quaternion.Lerp(from, to, elapsedTime / time);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+
+            }
+
+
+
+            isCockpitOpened = false;
+        }
+    }
+
 }

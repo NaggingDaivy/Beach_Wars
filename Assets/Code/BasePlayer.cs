@@ -50,6 +50,7 @@ public class BasePlayer : MonoBehaviour
         else if (Input.GetAxis("D-Pad X Axis") > 0 && Input.GetAxis("D-Pad X Axis") <= 1) // right
         {
             DisableInput();
+            GameObject.FindGameObjectWithTag("Creature").GetComponent<Creature>().EnableInput();
             //Creature
 
         }

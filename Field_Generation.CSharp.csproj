@@ -65,7 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Code\BasePlayer.cs" />
     <Compile Include="Assets\Code\Camera\CameraFollowPlayer.cs" />
+    <Compile Include="Assets\Code\Camera\CameraMode.cs" />
     <Compile Include="Assets\Code\Interfaces\IControllable.cs" />
     <Compile Include="Assets\Code\Pendule.cs" />
     <Compile Include="Assets\Code\Projectile\Laser.cs" />

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpaceShip : MonoBehaviour, IControllable
+public class SpaceShip : BasePlayer //, IControllable
 {
 
 
@@ -16,16 +16,15 @@ public class SpaceShip : MonoBehaviour, IControllable
 
     //private Transform _laserProjection;
 
-    private bool _inputEnabled = false;
-    private bool _hasJustSwitched = false;
-
 
 
     // Use this for initialization
     void Start()
     {
-
+        EnableInput();
         m_Speed = DefaultSpeed;
+        
+
         //_laserProjection = new GameObject().transform;
 
     }
@@ -41,38 +40,49 @@ public class SpaceShip : MonoBehaviour, IControllable
             float value = Time.deltaTime;
             this.transform.position += (this.transform.rotation * m_Speed * Time.deltaTime);
 
-            Quaternion RotationX = transform.rotation * Quaternion.Euler(Input.GetAxis("Vertical") * 40, 0, 0);
+            //transform.Rotate(40,0,0);
 
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationX, 0.05f);
+            //Quaternion RotationX =  transform.rotation * Quaternion.Euler(Input.GetAxis("Vertical") * 40, 0, 0);
 
-            Quaternion RotationY = transform.rotation * Quaternion.Euler(0, Input.GetAxis("Horizontal") * 40, 0);
+            //Quaternion RotationY = transform.rotation * Quaternion.Euler(0, Input.GetAxis("Horizontal") * 40, 0);
 
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationY, 0.05f);
+            //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationX, 0.05f);
+
+            //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationY, 0.05f);
+
+            transform.Rotate(2*Input.GetAxis("Vertical"), 2*Input.GetAxis("Horizontal"),0,Space.Self);// , 0,Space.Self);
 
             if (Input.GetKey(KeyCode.JoystickButton4)) // left bumper
             {
-                Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, 40);
+                //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, 40);
 
-                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+                //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+
+                transform.Rotate(0, 0, 2, Space.Self);
 
             }
 
             if (Input.GetKey(KeyCode.JoystickButton5)) // right bumper 
             {
-                Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, -40);
+                //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, -40);
 
-                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+                //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+                transform.Rotate(0, 0, -2, Space.Self);
 
             }
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
-            {
-                DisableInput();
+            //if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
+            //{
+            //    DisableInput();
 
-                GameObject.Find("tracto_low").GetComponent<Tractopelle>().EnableInput();
-            }
-            else if (_hasJustSwitched)
-                _hasJustSwitched = false;
+            //    GameObject.Find("tracto_low").GetComponent<Tractopelle>().EnableInput();
+            //}
+            //else if (_hasJustSwitched)
+            //    _hasJustSwitched = false;
+
+            //print("Y : " + Input.GetAxis("D-Pad Y Axis"));
+            //print("X : " + Input.GetAxis("D-Pad X Axis"));
+            CheckChangePlayer();
 
             if (Input.GetKeyDown(KeyCode.JoystickButton0))
             {
@@ -88,18 +98,18 @@ public class SpaceShip : MonoBehaviour, IControllable
         }
     }
 
-    public void EnableInput()
-    {
-        _inputEnabled = true;
-        _hasJustSwitched = true;
+    //public void EnableInput()
+    //{
+    //    _inputEnabled = true;
+    //    _hasJustSwitched = true;
 
-        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollowPlayer>().Player = this.transform;
-    }
+    //    GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollowPlayer>().Player = this.transform;
+    //}
 
-    public void DisableInput()
-    {
-        _inputEnabled = false;
-    }
+    //public void DisableInput()
+    //{
+    //    _inputEnabled = false;
+    //}
 
 
     private IEnumerator Fire()

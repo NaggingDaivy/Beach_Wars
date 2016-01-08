@@ -50,26 +50,50 @@ public class SpaceShip : BasePlayer //, IControllable
 
             //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationY, 0.05f);
 
-            transform.Rotate(2*Input.GetAxis("Vertical"), 2*Input.GetAxis("Horizontal"),0,Space.Self);// , 0,Space.Self);
+            //if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+            //{
+            //    CameraFollowPlayer test = _camera.GetComponent<CameraFollowPlayer>();
+            //    test.CanRotate = false;
+            //}
+            //else
+            //{
+            //    CameraFollowPlayer test = _camera.GetComponent<CameraFollowPlayer>();
+            //    test.CanRotate = true;
+            //}
 
-            if (Input.GetKey(KeyCode.JoystickButton4)) // left bumper
-            {
-                //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, 40);
+          
+            transform.Rotate(2*Input.GetAxis("Vertical"),0 ,0,Space.Self);
 
-                //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+            transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
 
-                transform.Rotate(0, 0, 2, Space.Self);
 
-            }
+            //if (transform.rotation.z != 0)
+            //{
+            //    transform.Rotate(0, 0, -transform.rotation.z, Space.Self);
+            //}
+            
+            
 
-            if (Input.GetKey(KeyCode.JoystickButton5)) // right bumper 
-            {
-                //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, -40);
+      
 
-                //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
-                transform.Rotate(0, 0, -2, Space.Self);
+            //if (Input.GetKey(KeyCode.JoystickButton4)) // left bumper
+            //{
+            //    //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, 40);
 
-            }
+            //    //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+
+            //    transform.Rotate(0, 0, 2, Space.Self);
+
+            //}
+
+            //if (Input.GetKey(KeyCode.JoystickButton5)) // right bumper 
+            //{
+            //    //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, -40);
+
+            //    //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, RotationZ, 0.05f);
+            //    transform.Rotate(0, 0, -2, Space.Self);
+
+            //}
 
             //if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
             //{

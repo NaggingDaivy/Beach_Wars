@@ -5,8 +5,12 @@ public class BasePlayer : MonoBehaviour
 {
 
     protected bool _inputEnabled = false;
-    protected bool _hasJustSwitched = false;
     public Camera _camera;
+
+    public bool isInputEnabled()
+    {
+        return _inputEnabled;
+    }
 
 
     protected void EnableInput()

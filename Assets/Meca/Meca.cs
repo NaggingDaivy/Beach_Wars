@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Meca : MonoBehaviour
+public class Meca : BasePlayer
 {
 
     private Animator _Animator;
@@ -9,19 +9,25 @@ public class Meca : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-
+        DisableInput();
 	    _Animator = GetComponent<Animator>();
+        
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-	    if (Input.GetKeyUp(KeyCode.Space)
-            && !_Animator.GetCurrentAnimatorStateInfo(0).IsName("jump_state"))
+	    if (_inputEnabled)
 	    {
-	        _Animator.SetTrigger("jump_trigger");
+            if (Input.GetKeyUp(KeyCode.JoystickButton0)
+            && !_Animator.GetCurrentAnimatorStateInfo(0).IsName("jump_state"))
+            {
+                _Animator.SetTrigger("jump_trigger");
+            }
+
+            CheckChangePlayer();
 	    }
-	
+	    
 	}
 }

@@ -8,12 +8,8 @@ public class BasePlayer : MonoBehaviour
     protected bool _hasJustSwitched = false;
     public Camera _camera;
 
-    public BasePlayer()
-    {
-        _camera.enabled = false;
-    }
 
-    void EnableInput()
+    protected void EnableInput()
     {
         _inputEnabled = true;
         _camera.enabled = true;
@@ -21,7 +17,7 @@ public class BasePlayer : MonoBehaviour
 
     }
 
-    void DisableInput()
+    protected void DisableInput()
     {
         _inputEnabled = false;
         _camera.enabled = false;
@@ -47,6 +43,7 @@ public class BasePlayer : MonoBehaviour
         else if (Input.GetAxis("D-Pad X Axis") < 0 && Input.GetAxis("D-Pad X Axis") >= -1) // left
         {
             DisableInput();
+            GameObject.FindGameObjectWithTag("Meca").GetComponent<Meca>().EnableInput();
             //meca
         }
 

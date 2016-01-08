@@ -38,28 +38,34 @@ public class CameraFollowPlayer : MonoBehaviour
 
         //transform.RotateAround(_Player.transform.position,Vector3.up,2);
 
-        switch (_CameraMode)
+        if (_Player.isInputEnabled())
         {
+            switch (_CameraMode)
+            {
                 case CameraMode.Normal:
-            {
-                transform.RotateAround(_Player.transform.position, _Player.transform.up, Input.GetAxis("RightH") * 2);
-                transform.RotateAround(_Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
-                
-                
-                
-               
-                
-                break;
-            }
-            case CameraMode.Fixed:
-            {
-                break;
-            }
+                    {
+                        transform.RotateAround(_Player.transform.position, _Player.transform.up, Input.GetAxis("RightH") * 2);
+                        transform.RotateAround(_Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
+
+
+
+
+
+                        break;
+                    }
+                case CameraMode.Fixed:
+                    {
+                        break;
+                    }
 
                 case CameraMode.Free:
-            {
-                break;
-            }
+                    {
+                        break;
+                    }
+            
+        }
+
+        
         }
 
 

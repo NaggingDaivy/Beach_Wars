@@ -12,8 +12,11 @@ public class SpaceShip : BasePlayer //, IControllable
     public float LaserShootDistance = 10f;
     public float LaserShootSpeed = 10f;
 
-    private Vector3 m_Speed;
+    private Vector3 _Speed;
     private bool isCockpitOpened = false;
+
+    public Transform[] LasersPostions ;
+    private int _LaserShootCounter = 0;
 
     //private Transform _laserProjection;
 
@@ -23,7 +26,7 @@ public class SpaceShip : BasePlayer //, IControllable
     void Start()
     {
         EnableInput();
-        m_Speed = DefaultSpeed;
+        _Speed = DefaultSpeed;
 
 
         //_laserProjection = new GameObject().transform;
@@ -39,7 +42,7 @@ public class SpaceShip : BasePlayer //, IControllable
         if (_inputEnabled)
         {
           
-            this.transform.position += (this.transform.rotation * m_Speed * Time.deltaTime);
+            this.transform.position += (this.transform.rotation * _Speed * Time.deltaTime);
 
 
 
@@ -125,6 +128,12 @@ public class SpaceShip : BasePlayer //, IControllable
 
     private IEnumerator Fire()
     {
+        if (_LaserShootCounter + 1 > 3 )
+            _LaserShootCounter = 0;
+        else
+        {
+            ++_LaserShootCounter;
+        }
         //GameObject LaserMesh = Instantiate(Resources.Load("LaserMesh",typeof(GameObject))) as GameObject;
         //UpdateLaser();
         Transform laserProjection = new GameObject().transform;
@@ -134,7 +143,9 @@ public class SpaceShip : BasePlayer //, IControllable
 
         GameObject laserMesh = Instantiate(LaserMesh);
 
-        laserMesh.transform.position = this.transform.position + transform.rotation * new Vector3(-7, 0, 0);
+        //laserMesh.transform.position = this.transform.position + transform.rotation * new Vector3(-7, 0, 0);
+
+        laserMesh.transform.position = LasersPostions[_LaserShootCounter].position;
 
 
         laserMesh.transform.LookAt(laserProjection);
@@ -147,12 +158,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
         Vector3 from = laserMesh.transform.position;
        
-        //while (Vector3.Distance(laserMesh.transform.position, laserProjection.transform.position) > 0.005f)
-        //{
-        //    laserMesh.transform.position = Vector3.Lerp(laserMesh.transform.position, laserProjection.transform.position, Time.deltaTime * LaserShootSpeed);
-
-        //    yield return null;
-        //}
+       
 
         while (elapsedTime < LaserShootSpeed)
         {
@@ -163,6 +169,13 @@ public class SpaceShip : BasePlayer //, IControllable
 
         Destroy(laserMesh.gameObject);
         Destroy(laserProjection.gameObject);
+
+        //while (Vector3.Distance(laserMesh.transform.position, laserProjection.transform.position) > 0.005f)
+        //{
+        //    laserMesh.transform.position = Vector3.Lerp(laserMesh.transform.position, laserProjection.transform.position, Time.deltaTime * LaserShootSpeed);
+
+        //    yield return null;
+        //}
 
         //GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
         //cube2.transform.position = this.transform.position + transform.rotation * new Vector3(0, 0, 10);

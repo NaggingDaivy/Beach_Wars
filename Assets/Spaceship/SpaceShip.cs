@@ -38,7 +38,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (_inputEnabled)
         {
-            float value = Time.deltaTime;
+          
             this.transform.position += (this.transform.rotation * m_Speed * Time.deltaTime);
 
 
@@ -200,7 +200,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
             Quaternion from = Cockpit.transform.localRotation;
-            Quaternion to = Quaternion.Euler(90, 0, 0);
+            Quaternion to = Quaternion.Euler(91, 0, 0);
 
             while (elapsedTime < time)
             {

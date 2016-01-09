@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor.SceneManagement;
 
 public class CameraFollowPlayer : MonoBehaviour
 {
@@ -8,8 +9,10 @@ public class CameraFollowPlayer : MonoBehaviour
     //public Vector3 DistanceCameraFromPlayer;
 
     public CameraMode _CameraMode = CameraMode.Normal;
+    public Vector3 FrontCameraPosition;
+    public Quaternion FrontCameraRotation; 
 
-    private Transform DefaultCameraPosition;
+    private Transform CameraInitial;
 
     //public bool CanRotate = true;
 
@@ -19,8 +22,11 @@ public class CameraFollowPlayer : MonoBehaviour
     void Start()
     {
         //Player.GetComponent<IControllable>().EnableInput();
+        CameraInitial = new GameObject().transform;
+        CameraInitial.localPosition = transform.localPosition;
+        CameraInitial.localRotation = transform.localRotation;
 
-        
+
 
     }
 
@@ -38,14 +44,41 @@ public class CameraFollowPlayer : MonoBehaviour
 
         //transform.RotateAround(_Player.transform.position,Vector3.up,2);
 
+
         if (_Player.isInputEnabled())
         {
             switch (_CameraMode)
             {
                 case CameraMode.Normal:
                     {
-                        transform.RotateAround(_Player.transform.position, _Player.transform.up, Input.GetAxis("RightH") * 2);
-                        transform.RotateAround(_Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
+                        if (Input.GetKey(KeyCode.JoystickButton9)) // right click right joystick
+                        {
+                            transform.localPosition = FrontCameraPosition;
+                            transform.localRotation = FrontCameraRotation;
+                        }
+                        else if (Input.GetKeyUp(KeyCode.JoystickButton9))
+                        {
+                            transform.localPosition = CameraInitial.localPosition;
+                            transform.localRotation = CameraInitial.localRotation;
+                            
+                        }
+                        else if (Input.GetAxis("RightH") != 0 || Input.GetAxis("RightV") != 0)
+                        {
+                            
+                            transform.RotateAround(_Player.transform.position, _Player.transform.up, Input.GetAxis("RightH") * 2);
+                            transform.RotateAround(_Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
+                        }
+                        else
+                        {
+                            Transform from = transform;
+
+
+                            transform.localPosition = Vector3.Lerp(from.localPosition, CameraInitial.localPosition, Time.deltaTime * 10.0f);
+
+                            transform.localRotation = Quaternion.Lerp(from.localRotation,
+                                CameraInitial.localRotation, Time.deltaTime * 10.0f);
+                        }
+
 
 
 
@@ -62,10 +95,10 @@ public class CameraFollowPlayer : MonoBehaviour
                     {
                         break;
                     }
-            
-        }
 
-        
+            }
+
+
         }
 
 

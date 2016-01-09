@@ -141,10 +141,23 @@ public class SpaceShip : BasePlayer //, IControllable
 
         laserMesh.transform.Rotate(-90, 0, 0);
 
-        while (Vector3.Distance(laserMesh.transform.position, laserProjection.transform.position) > 0.005f)
-        {
-            laserMesh.transform.position = Vector3.Lerp(laserMesh.transform.position, laserProjection.transform.position, Time.deltaTime * LaserShootSpeed);
+    
 
+        float elapsedTime = 0.0f;
+
+        Vector3 from = laserMesh.transform.position;
+       
+        //while (Vector3.Distance(laserMesh.transform.position, laserProjection.transform.position) > 0.005f)
+        //{
+        //    laserMesh.transform.position = Vector3.Lerp(laserMesh.transform.position, laserProjection.transform.position, Time.deltaTime * LaserShootSpeed);
+
+        //    yield return null;
+        //}
+
+        while (elapsedTime < LaserShootSpeed)
+        {
+            laserMesh.transform.position = Vector3.Lerp(from,laserProjection.transform.position, elapsedTime / LaserShootSpeed);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
 

@@ -118,14 +118,17 @@ public class SpaceShip : BasePlayer //, IControllable
 
         RaycastHit hit;
 
+        float dist;
         
         if (Physics.Raycast(transform.position, transform.forward, out hit, LaserShootDistance))
         {
             laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance);
+            dist = hit.distance;
         }
         else
         {
             laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
+            dist = LaserShootDistance;
         }
 
 
@@ -142,12 +145,13 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
         float elapsedTime = 0.0f;
+        float time = dist/LaserShootSpeed; // T = D / V 
 
         Vector3 from = laserMesh.transform.position;
 
-        while (elapsedTime < LaserShootSpeed)
+        while (elapsedTime < time)
         {
-            laserMesh.transform.position = Vector3.Lerp(from, laserProjection.transform.position, elapsedTime / LaserShootSpeed);
+            laserMesh.transform.position = Vector3.Lerp(from, laserProjection.transform.position, elapsedTime / time);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

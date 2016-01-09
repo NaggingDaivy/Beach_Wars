@@ -20,6 +20,6 @@ public class Score : MonoBehaviour {
     {
         _score += score;
 
-        GetComponent<Text>().text = "Score: " + score;
+        GetComponent<Text>().text = "Score: " + _score;
     }
 }

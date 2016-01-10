@@ -10,6 +10,8 @@ TagManager:
   - Meca
   - Creature
   - Cible
+  - HUDTractopelle
+  - HUDSpaceShip
   layers:
   - Default
   - TransparentFX

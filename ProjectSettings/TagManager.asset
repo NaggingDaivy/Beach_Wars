@@ -9,6 +9,7 @@ TagManager:
   - Tractopelle
   - Meca
   - Creature
+  - Cible
   layers:
   - Default
   - TransparentFX

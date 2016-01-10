@@ -186,6 +186,7 @@ public class SpaceShip : BasePlayer //, IControllable
             Destroy(hit.collider.gameObject);
         }
 
+        Destroy(rayCastProjection.gameObject);
 
     }
 

@@ -17,8 +17,8 @@ public class Tractopelle : BasePlayer //,IControllable
     public GameObject MeshPelleLevel3;
     public GameObject MeshPelleLevel2;
     public GameObject MeshPelleLevel1;
-
     public GameObject Gyrophare;
+    public AudioSource GyrophareSound;
 
 
 
@@ -195,14 +195,16 @@ public class Tractopelle : BasePlayer //,IControllable
     {
         if (_inputEnabled)
         {
+           
             TractopelleMove();
             Pelle();
             DirtLevel();
             TurnGyrophare();
-
-
-
             CheckChangePlayer();
+
+            if (!GyrophareSound.isPlaying)
+                GyrophareSound.Play();
+
 
             //if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
             //{
@@ -214,6 +216,10 @@ public class Tractopelle : BasePlayer //,IControllable
             //{
             //    _hasJustSwitched = false;
             //}
+        }
+        else
+        {
+            GyrophareSound.Stop();
         }
 
 

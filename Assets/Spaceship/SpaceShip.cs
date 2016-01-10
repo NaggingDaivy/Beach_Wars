@@ -15,11 +15,11 @@ public class SpaceShip : BasePlayer //, IControllable
     public AudioSource LaserSound;
     public SpaceShipMode _SpaceshipMode = SpaceShipMode.Levitate;
 
-    
+
     private Vector3 _Speed;
     private bool isCockpitOpened = false;
     private int _LaserShootCounter = 0;
-    private bool isCameraInFreeMode = false;
+    //private bool isCameraInFreeMode = false;
 
     //private Transform _laserProjection;
 
@@ -45,7 +45,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
-          
+
             this.transform.position += (this.transform.rotation * _Speed * Time.deltaTime);
 
 
@@ -75,7 +75,7 @@ public class SpaceShip : BasePlayer //, IControllable
                 StartCoroutine("OpenCloseCockpit");
             }
 
-           
+
 
 
 
@@ -98,24 +98,16 @@ public class SpaceShip : BasePlayer //, IControllable
 
             //}
 
-            
+
 
 
 
 
 
         }
-        else if(_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
+        else if (_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
         {
-            //if(Input.GetKey(KeyCode.JoystickButton6))
-            //{
-            //    _camera.GetComponent<CameraFollowPlayer>().ResetCameraPosition();
-            //    _camera.GetComponent<CameraFollowPlayer>()._CameraMode = CameraMode.Normal;
-
-            //    _Speed = new Vector3(0,0,0);
-
-            //}
-            //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(false);
+            CheckChangeCamera();
         }
     }
 
@@ -126,7 +118,7 @@ public class SpaceShip : BasePlayer //, IControllable
         LaserSound.Play();
         bool hasHitTarget = false;
 
-        if (_LaserShootCounter + 1 > 3 )
+        if (_LaserShootCounter + 1 > 3)
             _LaserShootCounter = 0;
         else
         {
@@ -142,8 +134,8 @@ public class SpaceShip : BasePlayer //, IControllable
         rayCastProjection.position = LasersPostions[_LaserShootCounter].position;
         rayCastProjection.transform.LookAt(laserProjection);
         rayCastProjection.transform.Rotate(-90, 0, 0);
-        
-        
+
+
 
         RaycastHit hit;
 
@@ -159,11 +151,11 @@ public class SpaceShip : BasePlayer //, IControllable
                 print(hit.collider.name);
                 hasHitTarget = true;
             }
-            
+
         }
         else
         {
-           // laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
+            // laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
             dist = LaserShootDistance;
         }
 
@@ -181,7 +173,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
         float elapsedTime = 0.0f;
-        float time = dist/LaserShootSpeed; // T = D / V 
+        float time = dist / LaserShootSpeed; // T = D / V 
 
         Vector3 from = laserMesh.transform.position;
 

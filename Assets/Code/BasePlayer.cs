@@ -6,6 +6,9 @@ public class BasePlayer : MonoBehaviour
 
     protected bool _inputEnabled = false;
     public Camera _camera;
+    private CameraMode _previousCameraMode;
+
+
 
     public bool isInputEnabled()
     {
@@ -29,7 +32,7 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void CheckChangePlayer()
     {
-        
+
 
         if (Input.GetAxis("D-Pad Y Axis") > 0 && Input.GetAxis("D-Pad Y Axis") <= 1) //Up
         {
@@ -62,14 +65,30 @@ public class BasePlayer : MonoBehaviour
             //Creature
 
         }
-        else if (Input.GetKey(KeyCode.JoystickButton6)) // Back
+        else if (Input.GetKeyDown(KeyCode.JoystickButton6)) // Back
         {
             //DisableInput();
+            _previousCameraMode = _camera.GetComponent<CameraFollowPlayer>()._CameraMode;
             _camera.GetComponent<CameraFollowPlayer>()._CameraMode = CameraMode.Free;
+
+
+
 
         }
 
-    // _camera.GetComponent<CameraFollowPlayer>();
+        // _camera.GetComponent<CameraFollowPlayer>();
+
+    }
+
+    protected void CheckChangeCamera()
+    {
+        if (Input.GetKeyDown(KeyCode.JoystickButton6))
+        {
+            _camera.GetComponent<CameraFollowPlayer>().ResetCameraPosition();
+            _camera.GetComponent<CameraFollowPlayer>()._CameraMode = _previousCameraMode;
+        }
+            
+
 
     }
 

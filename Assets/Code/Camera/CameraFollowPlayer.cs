@@ -8,7 +8,7 @@ public class CameraFollowPlayer : MonoBehaviour
     public BasePlayer _Player;
     //public Vector3 DistanceCameraFromPlayer;
 
-    public CameraMode _CameraMode = CameraMode.Normal;
+    public CameraMode _CameraMode; // = CameraMode.Normal;
     public Vector3 FrontCameraPosition;
     public Quaternion FrontCameraRotation;
 

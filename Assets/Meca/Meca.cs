@@ -18,7 +18,7 @@ public class Meca : BasePlayer
 	// Update is called once per frame
 	void Update () {
 
-	    if (_inputEnabled)
+        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
 	    {
             if (Input.GetKeyUp(KeyCode.JoystickButton0)
             && !_Animator.GetCurrentAnimatorStateInfo(0).IsName("jump_state"))
@@ -28,6 +28,10 @@ public class Meca : BasePlayer
 
             CheckChangePlayer();
 	    }
+        else if (_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
+        {
+            CheckChangeCamera();
+        }
 	    
 	}
 }

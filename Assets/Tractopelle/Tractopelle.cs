@@ -206,7 +206,7 @@ public class Tractopelle : BasePlayer //,IControllable
     // main loop (each time)
     void Update()
     {
-        if (_inputEnabled)
+        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
            
             TractopelleMove();
@@ -220,21 +220,12 @@ public class Tractopelle : BasePlayer //,IControllable
 
 
 
-            //if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)
-            //{
-            //    DisableInput();
-            //    GameObject.Find("SpaceShip").GetComponent<SpaceShip>().EnableInput();
-
-            //}
-            //else if (_hasJustSwitched)
-            //{
-            //    _hasJustSwitched = false;
-            //}
         }
-        else
+        else if(_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
         {
             GyrophareSound.Stop();
-            //GameObject.FindGameObjectWithTag("HUDTractopelle").Ch
+            CheckChangeCamera();
+
         }
 
 

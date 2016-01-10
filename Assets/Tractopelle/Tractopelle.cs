@@ -41,6 +41,7 @@ public class Tractopelle : BasePlayer //,IControllable
     void Start()
     {
         DisableInput();
+        //GameObject.FindGameObjectWithTag("HUDTractopelle").SetActive(false);
         // Textures offsets init
         OffsetTrackLeft = 0f;
         OffsetTrackRight = 0f;
@@ -233,6 +234,7 @@ public class Tractopelle : BasePlayer //,IControllable
         else
         {
             GyrophareSound.Stop();
+            //GameObject.FindGameObjectWithTag("HUDTractopelle").Ch
         }
 
 

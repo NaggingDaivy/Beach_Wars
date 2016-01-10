@@ -19,6 +19,7 @@ public class SpaceShip : BasePlayer //, IControllable
     private Vector3 _Speed;
     private bool isCockpitOpened = false;
     private int _LaserShootCounter = 0;
+    private bool isCameraInFreeMode = false;
 
     //private Transform _laserProjection;
 
@@ -28,6 +29,7 @@ public class SpaceShip : BasePlayer //, IControllable
     void Start()
     {
         EnableInput();
+        //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(true);
         _Speed = DefaultSpeed;
 
 
@@ -41,7 +43,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
 
-        if (_inputEnabled)
+        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
           
             this.transform.position += (this.transform.rotation * _Speed * Time.deltaTime);
@@ -102,6 +104,18 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
 
+        }
+        else if(_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
+        {
+            //if(Input.GetKey(KeyCode.JoystickButton6))
+            //{
+            //    _camera.GetComponent<CameraFollowPlayer>().ResetCameraPosition();
+            //    _camera.GetComponent<CameraFollowPlayer>()._CameraMode = CameraMode.Normal;
+
+            //    _Speed = new Vector3(0,0,0);
+
+            //}
+            //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(false);
         }
     }
 

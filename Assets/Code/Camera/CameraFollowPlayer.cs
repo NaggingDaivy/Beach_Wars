@@ -10,7 +10,7 @@ public class CameraFollowPlayer : MonoBehaviour
 
     public CameraMode _CameraMode = CameraMode.Normal;
     public Vector3 FrontCameraPosition;
-    public Quaternion FrontCameraRotation; 
+    public Quaternion FrontCameraRotation;
 
     private Transform CameraInitial;
 
@@ -28,6 +28,12 @@ public class CameraFollowPlayer : MonoBehaviour
 
 
 
+    }
+
+    public void ResetCameraPosition()
+    {
+        transform.localPosition = CameraInitial.localPosition;
+        transform.localRotation = CameraInitial.localRotation;
     }
 
     // Update is called once per frame
@@ -60,11 +66,11 @@ public class CameraFollowPlayer : MonoBehaviour
                         {
                             transform.localPosition = CameraInitial.localPosition;
                             transform.localRotation = CameraInitial.localRotation;
-                            
+
                         }
                         else if (Input.GetAxis("RightH") != 0 || Input.GetAxis("RightV") != 0)
                         {
-                            
+
                             transform.RotateAround(_Player.transform.position, _Player.transform.up, Input.GetAxis("RightH") * 2);
                             transform.RotateAround(_Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
                         }
@@ -93,6 +99,13 @@ public class CameraFollowPlayer : MonoBehaviour
 
                 case CameraMode.Free:
                     {
+                        transform.localPosition = transform.localPosition + transform.localRotation * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+                        transform.Rotate(2 * Input.GetAxis("RightV"), 0, 0, Space.Self);
+
+                        transform.Rotate(0, 2 * Input.GetAxis("RightH"), 0, Space.World);
+
+
                         break;
                     }
 

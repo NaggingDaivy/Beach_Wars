@@ -34,12 +34,16 @@ public class BasePlayer : MonoBehaviour
         if (Input.GetAxis("D-Pad Y Axis") > 0 && Input.GetAxis("D-Pad Y Axis") <= 1) //Up
         {
             DisableInput();
+
+            //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(true);
             GameObject.FindGameObjectWithTag("Spaceship").GetComponent<SpaceShip>().EnableInput();
             // Spaceship
         }
         else if (Input.GetAxis("D-Pad Y Axis") < 0 && Input.GetAxis("D-Pad Y Axis") >= -1) // Down
         {
             DisableInput();
+
+            //GameObject.FindGameObjectWithTag("HUDTractopelle").SetActive(true);
             GameObject.FindGameObjectWithTag("Tractopelle").GetComponent<Tractopelle>().EnableInput();
             //tractopelle
         }
@@ -56,6 +60,12 @@ public class BasePlayer : MonoBehaviour
             DisableInput();
             GameObject.FindGameObjectWithTag("Creature").GetComponent<Creature>().EnableInput();
             //Creature
+
+        }
+        else if (Input.GetKey(KeyCode.JoystickButton6)) // Back
+        {
+            //DisableInput();
+            _camera.GetComponent<CameraFollowPlayer>()._CameraMode = CameraMode.Free;
 
         }
 

@@ -134,7 +134,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (Physics.Raycast(rayCastProjection.position, transform.forward, out hit, LaserShootDistance))
         {
-            laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance); // reducing projectio nto the hit
+            laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance); // reducing projection nto the hit
             dist = hit.distance;
 
             if (hit.collider.tag == "Cible")

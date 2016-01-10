@@ -107,6 +107,8 @@ public class SpaceShip : BasePlayer //, IControllable
 
     private IEnumerator Fire()
     {
+        bool hasHitTarget = false;
+
         if (_LaserShootCounter + 1 > 3 )
             _LaserShootCounter = 0;
         else
@@ -124,6 +126,13 @@ public class SpaceShip : BasePlayer //, IControllable
         {
             laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance);
             dist = hit.distance;
+
+            if (hit.collider.tag == "Cible")
+            {
+                print(hit.collider.name);
+                hasHitTarget = true;
+            }
+            
         }
         else
         {
@@ -158,6 +167,11 @@ public class SpaceShip : BasePlayer //, IControllable
 
         Destroy(laserMesh.gameObject);
         Destroy(laserProjection.gameObject);
+
+        if (hasHitTarget)
+        {
+            Destroy(hit.collider.gameObject);
+        }
 
 
     }

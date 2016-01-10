@@ -12,7 +12,9 @@ public class SpaceShip : BasePlayer //, IControllable
     public float LaserShootDistance = 10f;
     public float LaserShootSpeed = 10f;
     public Transform[] LasersPostions;
+    public AudioSource LaserSound;
     public SpaceShipMode _SpaceshipMode = SpaceShipMode.Levitate;
+
     
     private Vector3 _Speed;
     private bool isCockpitOpened = false;
@@ -107,6 +109,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
     private IEnumerator Fire()
     {
+        LaserSound.Play();
         bool hasHitTarget = false;
 
         if (_LaserShootCounter + 1 > 3 )

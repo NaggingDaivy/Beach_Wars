@@ -115,16 +115,26 @@ public class SpaceShip : BasePlayer //, IControllable
         {
             ++_LaserShootCounter;
         }
-        
+
         Transform laserProjection = new GameObject().transform;
+
+        laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance); // front projection
+
+
+        Transform rayCastProjection = new GameObject().transform;
+        rayCastProjection.position = LasersPostions[_LaserShootCounter].position;
+        rayCastProjection.transform.LookAt(laserProjection);
+        rayCastProjection.transform.Rotate(-90, 0, 0);
+        
+        
 
         RaycastHit hit;
 
         float dist;
-        
-        if (Physics.Raycast(transform.position, transform.forward, out hit, LaserShootDistance))
+
+        if (Physics.Raycast(rayCastProjection.position, transform.forward, out hit, LaserShootDistance))
         {
-            laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance);
+            laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance); // reducing projectio nto the hit
             dist = hit.distance;
 
             if (hit.collider.tag == "Cible")
@@ -136,7 +146,7 @@ public class SpaceShip : BasePlayer //, IControllable
         }
         else
         {
-            laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
+           // laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
             dist = LaserShootDistance;
         }
 

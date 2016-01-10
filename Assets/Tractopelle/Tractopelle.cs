@@ -19,6 +19,7 @@ public class Tractopelle : BasePlayer //,IControllable
     public GameObject MeshPelleLevel1;
     public GameObject Gyrophare;
     public AudioSource GyrophareSound;
+    public ProceduralMaterial ProcMaterial;
 
 
 
@@ -182,12 +183,23 @@ public class Tractopelle : BasePlayer //,IControllable
 
     void DirtLevel()
     {
-        Gyrophare.transform.Rotate(0,5,0);
+        if(Input.GetKeyDown(KeyCode.JoystickButton4))
+        {
+            float actualValue = ProcMaterial.GetProceduralFloat("dirt_level");
+            ProcMaterial.SetProceduralFloat("dirt_level", actualValue - 0.1f);
+            ProcMaterial.RebuildTextures();
+        }
+        else if (Input.GetKeyDown(KeyCode.JoystickButton5))
+        {
+            float actualValue = ProcMaterial.GetProceduralFloat("dirt_level");
+            ProcMaterial.SetProceduralFloat("dirt_level", actualValue + 0.1f);
+            ProcMaterial.RebuildTextures();
+        }
     }
 
     void TurnGyrophare()
     {
-        
+        Gyrophare.transform.Rotate(0, 5, 0);
     }
 
     // main loop (each time)
@@ -204,6 +216,7 @@ public class Tractopelle : BasePlayer //,IControllable
 
             if (!GyrophareSound.isPlaying)
                 GyrophareSound.Play();
+
 
 
             //if (Input.GetKeyDown(KeyCode.JoystickButton3) && !_hasJustSwitched)

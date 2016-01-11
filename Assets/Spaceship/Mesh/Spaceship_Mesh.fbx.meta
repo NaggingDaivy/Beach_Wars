@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 2503428b46f57074a924c6541d093948
-timeCreated: 1452206514
+guid: f802919e95f674e49a698c9dbf53f145
+timeCreated: 1452530566
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -17,7 +17,7 @@ ModelImporter:
     4300002: Spaceship_Cockpit
     9500000: //RootNode
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
@@ -59,7 +59,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 0
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     human: []

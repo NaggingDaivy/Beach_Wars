@@ -18,6 +18,7 @@ public class Tractopelle : BasePlayer //,IControllable
     public GameObject MeshPelleLevel2;
     public GameObject MeshPelleLevel1;
     public GameObject Gyrophare;
+    public GameObject GyrophareSpotlight;
     public AudioSource GyrophareSound;
     public ProceduralMaterial ProcMaterial;
 
@@ -200,7 +201,8 @@ public class Tractopelle : BasePlayer //,IControllable
 
     void TurnGyrophare()
     {
-        Gyrophare.transform.Rotate(0, 5, 0);
+        Gyrophare.transform.Rotate(0,5,0);
+        GyrophareSpotlight.transform.Rotate(0, 5, 0);
     }
 
     // main loop (each time)

@@ -37,7 +37,7 @@ public class CameraFollowPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
 
         //Vector3 destinationPosition = Player.gameObject.transform.position + (Player.gameObject.transform.rotation*DistanceCameraFromPlayer);

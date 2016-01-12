@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor.SceneManagement;
+//using UnityEditor.SceneManagement;
 
 public class CameraFollowPlayer : MonoBehaviour
 {

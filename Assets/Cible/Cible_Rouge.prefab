@@ -106,8 +106,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreValue: 10
-  ParticleFire: {fileID: 19845968, guid: ba37812d7561acc4eb8323e9a0a57e4b, type: 2}
-  ParticleSmoke: {fileID: 19822970, guid: 544abd77f3d8d8b4894cc8963d32e8d8, type: 2}
+  ParticleFire: {fileID: 19874830, guid: ba37812d7561acc4eb8323e9a0a57e4b, type: 2}
+  ParticleSmoke: {fileID: 19874742, guid: ba37812d7561acc4eb8323e9a0a57e4b, type: 2}
+  Explosion: {fileID: 8300000, guid: 849dea57d31a4bd499e523799ebdff94, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -118,13 +119,53 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: ParticleFire
       value: 
-      objectReference: {fileID: 19845968, guid: ba37812d7561acc4eb8323e9a0a57e4b,
+      objectReference: {fileID: 19874830, guid: ba37812d7561acc4eb8323e9a0a57e4b,
         type: 2}
     - target: {fileID: 0}
       propertyPath: ParticleSmoke
       value: 
-      objectReference: {fileID: 19822970, guid: 544abd77f3d8d8b4894cc8963d32e8d8,
+      objectReference: {fileID: 19874742, guid: ba37812d7561acc4eb8323e9a0a57e4b,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: panLevelCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 849dea57d31a4bd499e523799ebdff94, type: 3}
+    - target: {fileID: 0}
+      propertyPath: Explosion
+      value: 
+      objectReference: {fileID: 8300000, guid: 849dea57d31a4bd499e523799ebdff94, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: spreadCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BypassEffects
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BypassListenerEffects
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188034}

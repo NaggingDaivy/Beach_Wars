@@ -229,6 +229,10 @@ public class Tractopelle : BasePlayer //,IControllable
             CheckChangeCamera();
 
         }
+        else
+        {
+            GyrophareSound.Stop();
+        }
 
 
 

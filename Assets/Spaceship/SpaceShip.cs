@@ -6,19 +6,46 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
     public GameObject Cockpit;
-    public Vector3 DefaultSpeed;
-    public Vector3 MaxSpeed;
+    //public Vector3 DefaultSpeed;
+    //public Vector3 MaxSpeed;
+    public float DefaultSpeed = 30f;
+    public float MinSpeed = 10f;
+    public float MaxSpeed = 100f;
+    public float _AutoPositionBrake = 0.2f;
+    public float _AccelerationScale = 1.0f;
+
+    //public float DiveAcceleration = 1.0f;
+    //public float DiveSpring = 0.4f;
+    //public float MaxDiveSpeed = 2.0f;
+    //public float BankSpring = 0.4f;
+
+    //public float RotAcceleration = 1.0f;
+    //public float RotAutoBrake = 0.2f;
+    //public float BankAmplification = 10.0f;
+    //public float MaxRotSpeed = 2.0f;
+
+
     public GameObject LaserMesh;
     public float LaserShootDistance = 10f;
     public float LaserShootSpeed = 10f;
-    public Transform[] LasersPostions;
+    public Transform[] LasersPositions;
     public AudioSource LaserSound;
     public SpaceShipMode _SpaceshipMode = SpaceShipMode.Levitate;
 
 
-    private Vector3 _Speed;
+    //private Vector3 _Speed;
+    private float _Speed = 0.0f;
+   
+    
+    //private float _RotSpeed;
+    //private float _DiveOrientation;
+    //private float accumulatedRotation = 0.0f;
+    //private float accumulatedDive = 0.0f;
+
+
     private bool isCockpitOpened = false;
     private int _LaserShootCounter = 0;
+    private float _Delta;
     //private bool isCameraInFreeMode = false;
 
     //private Transform _laserProjection;
@@ -46,19 +73,12 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
+            _Delta = Time.smoothDeltaTime;
+            
 
-            this.transform.position += (this.transform.rotation * _Speed * Time.deltaTime);
+            SpaceShipMove();
 
-
-
-            //Quaternion RotationX =  transform.rotation * Quaternion.Euler(Input.GetAxis("Vertical") * 40, 0, 0);
-
-            //Quaternion RotationY = transform.rotation * Quaternion.Euler(0, Input.GetAxis("Horizontal") * 40, 0);
-
-
-            transform.Rotate(2 * Input.GetAxis("Vertical"), 0, 0, Space.Self);
-
-            transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
+            //SpaceShipMoveTest();
 
             CheckChangePlayer();
 
@@ -80,7 +100,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
 
-            //if (Input.GetKey(KeyCode.JoystickButton4)) // left bumper
+            //if (Input+.GetKey(KeyCode.JoystickButton4)) // left bumper
             //{
             //    //Quaternion RotationZ = transform.rotation * Quaternion.Euler(0, 0, 40);
 
@@ -113,7 +133,90 @@ public class SpaceShip : BasePlayer //, IControllable
     }
 
 
+    private void SpaceShipMove()
+    {
+        if (Input.GetAxis("RT") != 0)
+        {
+            float acceleration = Input.GetAxis("RT");
+            _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, MaxSpeed);
+        }
+        else if (Input.GetAxis("LT") != 0)
+        {
+            float deceleration = Input.GetAxis("LT");
+            _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, MinSpeed);
+        }
+        else
+        {
+            _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
+        }
 
+
+        this.transform.position += (this.transform.rotation * new Vector3(0,0,_Speed) * Time.deltaTime);
+
+
+
+        //Quaternion RotationX =  transform.rotation * Quaternion.Euler(Input.GetAxis("Vertical") * 40, 0, 0);
+
+        //Quaternion RotationY = transform.rotation * Quaternion.Euler(0, Input.GetAxis("Horizontal") * 40, 0);
+
+
+        transform.Rotate(2 * Input.GetAxis("Vertical"), 0, 0, Space.Self);
+
+        transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
+        
+    }
+
+    //private void SpaceShipMoveTest()
+    //{
+    //    _Delta = Time.smoothDeltaTime;
+
+    //    if (Input.GetAxis("RT") != 0)
+    //    {
+    //        float acceleration = Input.GetAxis("RT");
+    //        _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, (MaxSpeed));
+    //    }
+    //    else if (Input.GetAxis("LT") != 0)
+    //    {
+    //        float deceleration = Input.GetAxis("LT");
+    //        _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, DefaultSpeed);
+    //    }
+    //    else
+    //    {
+    //        _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
+    //    }
+
+    //    if (Input.GetAxis("Horizontal") < 0.0f)
+    //        _RotSpeed = Mathf.Max(-MaxRotSpeed, _RotSpeed - RotAcceleration * _AccelerationScale * _Delta);
+    //    else if (Input.GetAxis("Horizontal") > 0.0f)
+    //        _RotSpeed = Mathf.Min(MaxRotSpeed, _RotSpeed + RotAcceleration * _AccelerationScale  * _Delta);
+    //    else
+    //        _RotSpeed = Mathf.Lerp(0.0f, _RotSpeed, 1.0f - BankSpring * _Delta);
+
+    //    if (Input.GetAxis("Vertical") < 0.0f)
+    //        _DiveOrientation = Mathf.Max(-MaxDiveSpeed, _DiveOrientation - DiveAcceleration * _AccelerationScale * _Delta);
+    //    else
+    //    {
+    //        if (Input.GetAxis("Vertical") > 0.0f)
+    //            _DiveOrientation = Mathf.Min(MaxDiveSpeed, _DiveOrientation + DiveAcceleration * _AccelerationScale * _Delta);
+    //        else
+    //            _DiveOrientation = Mathf.Lerp(0.0f, _DiveOrientation, 1.0f - DiveSpring * _Delta);
+
+    //        float distanceToGround = Mathf.Clamp01((transform.position.y * 0.25f) - 1.0f);
+    //        _DiveOrientation = Mathf.Lerp(0.0f, _DiveOrientation, distanceToGround);
+    //    }
+
+
+
+    //    accumulatedRotation += _RotSpeed * _Delta;
+    //    accumulatedDive += _DiveOrientation * _Delta;
+
+    //    transform.position += transform.forward * _Speed * _Delta;
+    //    transform.rotation = Quaternion.Euler(_DiveOrientation, accumulatedRotation,
+    //        -_RotSpeed * BankAmplification);
+
+
+
+    //}
     private IEnumerator Fire()
     {
         LaserSound.Play();
@@ -132,7 +235,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
         Transform rayCastProjection = new GameObject().transform;
-        rayCastProjection.position = LasersPostions[_LaserShootCounter].position;
+        rayCastProjection.position = LasersPositions[_LaserShootCounter].position;
         rayCastProjection.transform.LookAt(laserProjection);
         rayCastProjection.transform.Rotate(-90, 0, 0);
 
@@ -164,7 +267,7 @@ public class SpaceShip : BasePlayer //, IControllable
         GameObject laserMesh = Instantiate(LaserMesh);
 
 
-        laserMesh.transform.position = LasersPostions[_LaserShootCounter].position;
+        laserMesh.transform.position = LasersPositions[_LaserShootCounter].position;
 
 
         laserMesh.transform.LookAt(laserProjection);

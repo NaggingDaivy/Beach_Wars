@@ -106,13 +106,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreValue: 20
+  ParticleFire: {fileID: 19845968, guid: ba37812d7561acc4eb8323e9a0a57e4b, type: 2}
+  ParticleSmoke: {fileID: 19886940, guid: ba37812d7561acc4eb8323e9a0a57e4b, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: ParticleFire
+      value: 
+      objectReference: {fileID: 19845968, guid: ba37812d7561acc4eb8323e9a0a57e4b,
+        type: 2}
+    - target: {fileID: 0}
+      propertyPath: ParticleSmoke
+      value: 
+      objectReference: {fileID: 19886940, guid: ba37812d7561acc4eb8323e9a0a57e4b,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 186256}

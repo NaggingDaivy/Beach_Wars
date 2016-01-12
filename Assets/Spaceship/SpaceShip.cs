@@ -28,6 +28,7 @@ public class SpaceShip : BasePlayer //, IControllable
     // Use this for initialization
     void Start()
     {
+        
         EnableInput();
         //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(true);
         _Speed = DefaultSpeed;
@@ -148,7 +149,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
             if (hit.collider.tag == "Cible")
             {
-                print(hit.collider.name);
+                //print(hit.collider.name);
                 hasHitTarget = true;
             }
 
@@ -189,7 +190,15 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (hasHitTarget)
         {
-            Destroy(hit.collider.gameObject);
+            
+
+            if (hit.collider.gameObject != null)
+            {
+                hit.collider.gameObject.GetComponent<Target>().UpdateScore();
+                hit.collider.gameObject.GetComponent<Target>().Explose(transform.position);
+            }
+            
+           
         }
 
         Destroy(rayCastProjection.gameObject);

@@ -5,6 +5,9 @@ public class Meca : BasePlayer
 {
 
     private Animator _Animator;
+    public AudioClip _CrackSound;
+    public AudioClip WilhemScream;
+    public AudioClip Breathing;
 
 	// Use this for initialization
 	void Start ()
@@ -34,4 +37,23 @@ public class Meca : BasePlayer
         }
 	    
 	}
+
+    public void CrackKnucklesAudio()
+    {
+       GetComponent<AudioSource>().clip = _CrackSound;
+       GetComponent<AudioSource>().Play();
+    }
+
+    public void WilhemScreamAudio()
+    {
+       GetComponent<AudioSource>().clip = WilhemScream;
+       GetComponent<AudioSource>().Play();
+    }
+
+    public void BreathingSound()
+    {
+        GetComponent<AudioSource>().clip = Breathing;
+        GetComponent<AudioSource>().Play();
+    }
+
 }

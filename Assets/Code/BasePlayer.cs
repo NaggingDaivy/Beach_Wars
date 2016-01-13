@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class BasePlayer : MonoBehaviour
@@ -7,6 +8,7 @@ public class BasePlayer : MonoBehaviour
     protected bool _inputEnabled = false;
     public Camera _camera;
     private CameraMode _previousCameraMode;
+    public GameObject _HUDPlayer;
 
 
 
@@ -20,6 +22,8 @@ public class BasePlayer : MonoBehaviour
     {
         _inputEnabled = true;
         _camera.enabled = true;
+        if(_HUDPlayer != null)
+            _HUDPlayer.SetActive(true);
 
 
     }
@@ -28,6 +32,8 @@ public class BasePlayer : MonoBehaviour
     {
         _inputEnabled = false;
         _camera.enabled = false;
+        if (_HUDPlayer != null)
+            _HUDPlayer.SetActive(false);
     }
 
     protected virtual void CheckChangePlayer()

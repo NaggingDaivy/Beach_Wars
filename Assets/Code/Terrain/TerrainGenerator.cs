@@ -23,6 +23,8 @@ public class TerrainGenerator : MonoBehaviour
     public int PlatformPosX = 0;
     public int PlatformPosZ = 0;
     public int SquareScale = 25;
+    public Color DamierColor1 = Color.black;
+    public Color DamierColor2 = Color.white;
 
     //Texture
     public Texture2D AlbedoTexture = null;
@@ -113,7 +115,7 @@ public class TerrainGenerator : MonoBehaviour
 
         pix = new Color[TextureWidth * TextureHeight];
 
-        Color PlatformColor = Color.black;
+        Color PlatformColor = DamierColor1;
 
         int squareScale = TextureWidth / SquareScale;
 
@@ -125,10 +127,10 @@ public class TerrainGenerator : MonoBehaviour
             {
                 counterSquareWidth = 0;
 
-                if (PlatformColor == Color.white)
-                    PlatformColor = Color.black;
+                if (PlatformColor == DamierColor2)
+                    PlatformColor = DamierColor1;
                 else
-                    PlatformColor = Color.white;
+                    PlatformColor = DamierColor2;
             }
 
             counterSquareHeight = 0;
@@ -139,10 +141,10 @@ public class TerrainGenerator : MonoBehaviour
                 {
                     counterSquareHeight = 0;
 
-                    if (PlatformColor == Color.white)
-                        PlatformColor = Color.black;
+                    if (PlatformColor == DamierColor2)
+                        PlatformColor = DamierColor1;
                     else
-                        PlatformColor = Color.white;
+                        PlatformColor = DamierColor2;
                 }
 
                

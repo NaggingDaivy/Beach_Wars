@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 public class SpaceShip : BasePlayer //, IControllable
 {
@@ -13,6 +16,9 @@ public class SpaceShip : BasePlayer //, IControllable
     public float MaxSpeed = 100f;
     public float _AutoPositionBrake = 0.2f;
     public float _AccelerationScale = 1.0f;
+    public Image SpeedJaugeUI;
+    public Text SpeedTextUI;
+    
 
     //public float DiveAcceleration = 1.0f;
     //public float DiveSpring = 0.4f;
@@ -163,7 +169,12 @@ public class SpaceShip : BasePlayer //, IControllable
         transform.Rotate(2 * Input.GetAxis("Vertical"), 0, 0, Space.Self);
 
         transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
-        
+
+        // 1 = max Speed;
+        SpeedJaugeUI.fillAmount = _Speed/MaxSpeed;
+        SpeedTextUI.text =  String.Format("{0:0.00}", _Speed);
+
+
     }
 
     //private void SpaceShipMoveTest()

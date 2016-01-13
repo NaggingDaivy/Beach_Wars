@@ -36,6 +36,7 @@ public class SpaceShip : BasePlayer //, IControllable
     public float LaserShootSpeed = 10f;
     public Transform[] LasersPositions;
     public AudioSource LaserSound;
+    public AudioSource EngineSound;
     public SpaceShipMode _SpaceshipMode = SpaceShipMode.Levitate;
 
 
@@ -69,6 +70,8 @@ public class SpaceShip : BasePlayer //, IControllable
 
         //_laserProjection = new GameObject().transform;
 
+        
+
     }
 
     // Update is called once per frame
@@ -79,6 +82,9 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
+            if(!EngineSound.isPlaying)
+                EngineSound.Play();
+
             _Delta = Time.smoothDeltaTime;
             
 
@@ -134,7 +140,12 @@ public class SpaceShip : BasePlayer //, IControllable
         }
         else if (_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
         {
+            EngineSound.Stop();
             CheckChangeCamera();
+        }
+        else
+        {
+            EngineSound.Stop();
         }
     }
 
@@ -145,15 +156,18 @@ public class SpaceShip : BasePlayer //, IControllable
         {
             float acceleration = Input.GetAxis("RT");
             _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, MaxSpeed);
+            EngineSound.pitch = Mathf.Min(EngineSound.pitch + EngineSound.pitch * acceleration * _AccelerationScale * _Delta, 3.0f);
         }
         else if (Input.GetAxis("LT") != 0)
         {
             float deceleration = Input.GetAxis("LT");
             _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, MinSpeed);
+            EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * deceleration * _AccelerationScale * _Delta, 0.3f);
         }
         else
         {
             _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
+            EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * _AutoPositionBrake * _Delta, 1.0f);
         }
 
 

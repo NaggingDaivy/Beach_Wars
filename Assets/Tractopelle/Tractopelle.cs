@@ -21,6 +21,7 @@ public class Tractopelle : BasePlayer //,IControllable
     public GameObject Gyrophare;
     public GameObject GyrophareSpotlight;
     public AudioSource GyrophareSound;
+    public AudioSource AudioEngine;
     public ProceduralMaterial ProcMaterial;
     public Slider DirtLevelSlider;
 
@@ -34,8 +35,11 @@ public class Tractopelle : BasePlayer //,IControllable
     //private bool _hasJustSwitched = false;
 
     //private Animator TankAnim;
-    //private AudioSource AudioBoum, AudioTurret, AudioWheel;
-    //private float Audio_Turret_snd, AudioTrack;
+    //private AudioSource AudioBoum, AudioTurret, AudioEngine;
+    
+    private float Audio_Turret_snd;
+    private float AudioTrack;
+  
 
     // public float SpeedTurretFactor = 8f; // turret speed adjustement
 
@@ -59,13 +63,13 @@ public class Tractopelle : BasePlayer //,IControllable
 
         //AudioTurret = MeshTurret_Y.GetComponent<AudioSource>();
 
-        //AudioWheel = MeshTractopelle.GetComponent<AudioSource>();
+        //AudioEngine = MeshTractopelle.GetComponent<AudioSource>();
 
         //AudioTurret.volume = 0;
-        /*AudioTurret.Play();
-    AudioWheel.volume = 0.1f;
-    AudioWheel.pitch = 1.0f;
-    AudioWheel.Play();*/
+        //AudioTurret.Play();
+        //AudioEngine.volume = 0.1f;
+        //AudioEngine.pitch = 1.0f;
+        //AudioEngine.Play();
 
     }
 
@@ -171,18 +175,18 @@ public class Tractopelle : BasePlayer //,IControllable
 
         //Sound of wheel
 
-        //if (InputMove_v != 0 || InputMove_h != 0)
-        //    AudioTrack = AudioTrack + .1f;
-        //else
-        //    AudioTrack = AudioTrack - .05f;
+        if (InputMove_v != 0 || InputMove_h != 0)
+            AudioTrack = AudioTrack + .1f;
+        else
+            AudioTrack = AudioTrack - .05f;
 
-        //if (AudioTrack < 0f)
-        //    AudioTrack = 0f;
-        //else if (AudioTrack > 1f)
-        //    AudioTrack = 1f;
+        if (AudioTrack < 0f)
+            AudioTrack = 0f;
+        else if (AudioTrack > 1f)
+            AudioTrack = 1f;
 
-        //AudioWheel.volume = 0.05f + AudioTrack;
-        //AudioWheel.pitch = 1.0f + AudioTrack;
+        AudioEngine.volume = 0.5f + AudioTrack;
+        AudioEngine.pitch = 1f + AudioTrack;
     }
 
     void DirtLevel()
@@ -212,17 +216,25 @@ public class Tractopelle : BasePlayer //,IControllable
     // main loop (each time)
     void Update()
     {
+        TurnGyrophare();
         if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
            
             TractopelleMove();
             Pelle();
             DirtLevel();
-            TurnGyrophare();
             CheckChangePlayer();
 
             if (!GyrophareSound.isPlaying)
                 GyrophareSound.Play();
+
+            if (!AudioEngine.isPlaying)
+            {
+                AudioEngine.volume = 0.1f;
+                AudioEngine.pitch = 1.0f;
+                AudioEngine.Play();
+            }
+           
 
 
 
@@ -230,12 +242,14 @@ public class Tractopelle : BasePlayer //,IControllable
         else if(_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
         {
             GyrophareSound.Stop();
+            AudioEngine.Stop();
             CheckChangeCamera();
 
         }
         else
         {
             GyrophareSound.Stop();
+            AudioEngine.Stop();
         }
 
 

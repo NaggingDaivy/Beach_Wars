@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a272671133ffae046b00648eecab6385
-timeCreated: 1452531471
+timeCreated: 1452715984
 licenseType: Free
 SubstanceImporter:
   serializedVersion: 5
@@ -1115,8 +1115,8 @@ SubstanceImporter:
     name: Gyrophare
     prototypeName: Gyrophare
     shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-    shaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION _METALLICGLOSSMAP _NORMALMAP
-    renderQueue: 3000
+    shaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP
+    renderQueue: -1
     lightmapFlags: 1
     inputs:
     - name: $randomseed
@@ -1207,7 +1207,7 @@ SubstanceImporter:
         data:
           first:
             name: _DstBlend
-          second: 10
+          second: 0
         data:
           first:
             name: _Cutoff
@@ -1219,7 +1219,7 @@ SubstanceImporter:
         data:
           first:
             name: _ZWrite
-          second: 0
+          second: 1
         data:
           first:
             name: _Glossiness
@@ -1243,7 +1243,7 @@ SubstanceImporter:
         data:
           first:
             name: _Mode
-          second: 3
+          second: 0
         data:
           first:
             name: _Metallic
@@ -1252,11 +1252,11 @@ SubstanceImporter:
         data:
           first:
             name: _EmissionColor
-          second: {r: 8.5640135, g: 2.3034246, b: 0, a: 1}
+          second: {r: 10, g: 3.517241, b: 0, a: 1}
         data:
           first:
             name: _Color
-          second: {r: 1, g: 1, b: 1, a: 1}
+          second: {r: 0, g: 0, b: 0, a: 0}
     textureParameters:
     - name: Gyrophare_basecolor
       alphaSource: 6

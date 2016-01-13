@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Tractopelle : BasePlayer //,IControllable
@@ -21,6 +22,7 @@ public class Tractopelle : BasePlayer //,IControllable
     public GameObject GyrophareSpotlight;
     public AudioSource GyrophareSound;
     public ProceduralMaterial ProcMaterial;
+    public Slider DirtLevelSlider;
 
 
 
@@ -185,6 +187,8 @@ public class Tractopelle : BasePlayer //,IControllable
 
     void DirtLevel()
     {
+        DirtLevelSlider.value = ProcMaterial.GetProceduralFloat("dirt_level");
+        
         if(Input.GetKeyDown(KeyCode.JoystickButton4))
         {
             float actualValue = ProcMaterial.GetProceduralFloat("dirt_level");

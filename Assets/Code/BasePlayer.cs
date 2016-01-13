@@ -22,6 +22,7 @@ public class BasePlayer : MonoBehaviour
     {
         _inputEnabled = true;
         _camera.enabled = true;
+        _camera.GetComponent<AudioListener>().enabled = true;
         if(_HUDPlayer != null)
             _HUDPlayer.SetActive(true);
 
@@ -32,8 +33,11 @@ public class BasePlayer : MonoBehaviour
     {
         _inputEnabled = false;
         _camera.enabled = false;
+        _camera.GetComponent<AudioListener>().enabled = false;
         if (_HUDPlayer != null)
             _HUDPlayer.SetActive(false);
+
+
     }
 
     protected virtual void CheckChangePlayer()

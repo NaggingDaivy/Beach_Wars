@@ -34,6 +34,12 @@ public class SpaceShip : BasePlayer //, IControllable
     public GameObject LaserMesh;
     public float LaserShootDistance = 10f;
     public float LaserShootSpeed = 10f;
+
+    public float ParticleEmissionMin = 5f;
+    public float ParticleEmissionMax = 200f;
+    public float ParticleEmissionDefault = 20f;
+    public ParticleSystem[] ArrayParticleSystems;
+
     public Transform[] LasersPositions;
     public AudioSource LaserSound;
     public AudioSource EngineSound;
@@ -42,6 +48,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
     //private Vector3 _Speed;
     private float _Speed = 0.0f;
+    private float _ParticleEmissionValue = 0.0f;
    
     
     //private float _RotSpeed;
@@ -66,11 +73,12 @@ public class SpaceShip : BasePlayer //, IControllable
         EnableInput();
         //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(true);
         _Speed = DefaultSpeed;
+        _ParticleEmissionValue = ParticleEmissionDefault;
 
 
         //_laserProjection = new GameObject().transform;
 
-        
+
 
     }
 
@@ -157,17 +165,36 @@ public class SpaceShip : BasePlayer //, IControllable
             float acceleration = Input.GetAxis("RT");
             _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, MaxSpeed);
             EngineSound.pitch = Mathf.Min(EngineSound.pitch + EngineSound.pitch * acceleration * _AccelerationScale * _Delta, 3.0f);
+
+            foreach (ParticleSystem particleSystem in ArrayParticleSystems)
+            {
+                 _ParticleEmissionValue = Mathf.Min(_ParticleEmissionValue + _ParticleEmissionValue*acceleration*_AccelerationScale*_Delta,ParticleEmissionMax);
+
+                particleSystem.emissionRate = _ParticleEmissionValue;
+            }
         }
         else if (Input.GetAxis("LT") != 0)
         {
             float deceleration = Input.GetAxis("LT");
             _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, MinSpeed);
             EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * deceleration * _AccelerationScale * _Delta, 0.3f);
+
+            foreach (ParticleSystem particleSystem in ArrayParticleSystems)
+            {
+                _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * deceleration * _AccelerationScale * _Delta, ParticleEmissionMin);
+                particleSystem.emissionRate = _ParticleEmissionValue;
+            }
         }
         else
         {
             _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
             EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * _AutoPositionBrake * _Delta, 1.0f);
+
+            foreach (ParticleSystem particleSystem in ArrayParticleSystems)
+            {
+                _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * _AutoPositionBrake * _AccelerationScale * _Delta, ParticleEmissionDefault);
+                particleSystem.emissionRate = _ParticleEmissionValue;
+            }
         }
 
 

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 006ac06c33a25bd4ebee19e65af18dc1
-timeCreated: 1452905209
+guid: a8f6f9053c137004681ef32ed548b7a0
+timeCreated: 1453389597
 licenseType: Free
 SubstanceImporter:
   serializedVersion: 5
@@ -26,7 +26,7 @@ SubstanceImporter:
       scale: {x: 1, y: 1}
       generateMipmaps: 1
       generateAllOutputs: 0
-      animationUpdateRate: 0
+      animationUpdateRate: 42
     materialProperties:
       serializedVersion: 2
       texEnvs:
@@ -146,7 +146,7 @@ SubstanceImporter:
         data:
           first:
             name: _EmissionColor
-          second: {r: 20, g: 5.3793106, b: 0, a: 1}
+          second: {r: 10, g: 5.172414, b: 0, a: 1}
         data:
           first:
             name: _Color

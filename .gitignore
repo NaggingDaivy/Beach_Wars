@@ -1,3 +1,5 @@
 Library/
 Temp/UnityVS_bin/Debug/UnityEditor.OSXStandalone.Extensions.xml
 Temp/
+Build/
+Content/

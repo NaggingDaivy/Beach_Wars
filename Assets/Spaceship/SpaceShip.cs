@@ -302,7 +302,7 @@ public class SpaceShip : BasePlayer //, IControllable
             laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, hit.distance); // reducing projection nto the hit
             dist = hit.distance;
 
-            if (hit.collider.tag == "Cible")
+            if (hit.collider.tag == "Cible" && hit.collider != null)
             {
                 //print(hit.collider.name);
                 hasHitTarget = true;

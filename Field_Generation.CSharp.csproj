@@ -77,6 +77,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Cible\Target.cs" />
     <Compile Include="Assets\Code\BasePlayer.cs" />
     <Compile Include="Assets\Code\Camera\CameraFollowPlayer.cs" />
     <Compile Include="Assets\Code\Camera\CameraMode.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="Assets\Code\Projectile\Projectile.cs" />
     <Compile Include="Assets\Code\Score.cs" />
     <Compile Include="Assets\Code\Spotlight.cs" />
-    <Compile Include="Assets\Code\Target.cs" />
     <Compile Include="Assets\Code\Terrain\Decoration.cs" />
     <Compile Include="Assets\Code\Terrain\DecorationSpawner.cs" />
     <Compile Include="Assets\Code\Terrain\TerrainGenerator.cs" />

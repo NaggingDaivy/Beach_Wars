@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Runtime.Remoting.Messaging;
-using UnityEditor.SceneManagement;
-using UnityEngine.UI;
 
 //[RequireComponent(typeof(AudioSource))]
 public class Target : MonoBehaviour

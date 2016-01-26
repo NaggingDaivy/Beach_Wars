@@ -94,6 +94,7 @@ public class BasePlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.JoystickButton6))
         {
+            _camera.transform.parent = this.transform;
             _camera.GetComponent<CameraFollowPlayer>().ResetCameraPosition();
             _camera.GetComponent<CameraFollowPlayer>()._CameraMode = _previousCameraMode;
         }

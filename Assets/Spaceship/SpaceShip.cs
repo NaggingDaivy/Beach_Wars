@@ -9,8 +9,6 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
     public GameObject Cockpit;
-    //public Vector3 DefaultSpeed;
-    //public Vector3 MaxSpeed;
     public float DefaultSpeed = 30f;
     public float MinSpeed = 10f;
     public float MaxSpeed = 100f;
@@ -18,7 +16,7 @@ public class SpaceShip : BasePlayer //, IControllable
     public float _AccelerationScale = 1.0f;
     public Image SpeedJaugeUI;
     public Text SpeedTextUI;
-    
+
 
     //public float DiveAcceleration = 1.0f;
     //public float DiveSpring = 0.4f;
@@ -45,12 +43,14 @@ public class SpaceShip : BasePlayer //, IControllable
     public AudioSource EngineSound;
     public SpaceShipMode _SpaceshipMode = SpaceShipMode.Levitate;
 
+    public Transform PointBeachRotate;
+
 
     //private Vector3 _Speed;
     private float _Speed = 0.0f;
     private float _ParticleEmissionValue = 0.0f;
-   
-    
+
+
     //private float _RotSpeed;
     //private float _DiveOrientation;
     //private float accumulatedRotation = 0.0f;
@@ -69,16 +69,10 @@ public class SpaceShip : BasePlayer //, IControllable
     // Use this for initialization
     void Start()
     {
-        
+
         EnableInput();
-        //GameObject.FindGameObjectWithTag("HUDSpaceShip").SetActive(true);
         _Speed = DefaultSpeed;
         _ParticleEmissionValue = ParticleEmissionDefault;
-
-
-        //_laserProjection = new GameObject().transform;
-
-
 
     }
 
@@ -90,35 +84,20 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
         {
-            if(!EngineSound.isPlaying)
+            if (!EngineSound.isPlaying)
                 EngineSound.Play();
 
             _Delta = Time.smoothDeltaTime;
-            
 
             SpaceShipMove();
-
-            //SpaceShipMoveTest();
 
             CheckChangePlayer();
 
             if (Input.GetKeyDown(KeyCode.JoystickButton0))
-            {
                 StartCoroutine("Fire");
-                //_fireLaser = true;
-                //Vector3 laserProjection = this.transform.position + transform.rotation * new Vector3(0, 0, 30);
-
-            }
-
 
             if (Input.GetKeyDown(KeyCode.JoystickButton3))
-            {
                 StartCoroutine("OpenCloseCockpit");
-            }
-
-
-
-
 
             //if (Input+.GetKey(KeyCode.JoystickButton4)) // left bumper
             //{
@@ -138,18 +117,13 @@ public class SpaceShip : BasePlayer //, IControllable
             //    transform.Rotate(0, 0, -2, Space.Self);
 
             //}
-
-
-
-
-
-
-
         }
         else if (_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
         {
+            _camera.transform.parent = null;
             EngineSound.Stop();
             CheckChangeCamera();
+            RotateAroundBeach(); // make spaceship tourn around the beach
         }
         else
         {
@@ -157,118 +131,115 @@ public class SpaceShip : BasePlayer //, IControllable
         }
     }
 
+    private void RotateAroundBeach()
+    {
+        if (ReturnToBeach())
+        {
+            this.transform.LookAt(PointBeachRotate);
+            this.transform.Rotate(0, -90, 0, Space.World);
+
+            AutoPilot();
+            this.transform.RotateAround(PointBeachRotate.position, PointBeachRotate.up, 0.1f);
+        }
+
+    }
+
+    //return true if returned to beach, false if not the case
+    private bool ReturnToBeach() 
+    {
+        this.transform.LookAt(PointBeachRotate);
+
+        if (Vector3.Distance(transform.position, PointBeachRotate.position) > 200)
+        {
+            AutoPilot();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void Accelerate()
+    {
+        float acceleration = Input.GetAxis("RT");
+        _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, MaxSpeed);
+        EngineSound.pitch = Mathf.Min(EngineSound.pitch + EngineSound.pitch * acceleration * _AccelerationScale * _Delta, 3.0f);
+
+        foreach (ParticleSystem particleSystem in ArrayParticleSystems)
+        {
+            _ParticleEmissionValue = Mathf.Min(_ParticleEmissionValue + _ParticleEmissionValue * acceleration * _AccelerationScale * _Delta, ParticleEmissionMax);
+
+            particleSystem.emissionRate = _ParticleEmissionValue;
+        }
+
+        this.transform.position += (this.transform.rotation * new Vector3(0, 0, _Speed) * Time.deltaTime);
+
+        PrintHUDInfo();
+    }
+
+    private void Break()
+    {
+        float deceleration = Input.GetAxis("LT");
+        _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, MinSpeed);
+        EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * deceleration * _AccelerationScale * _Delta, 0.3f);
+
+        foreach (ParticleSystem particleSystem in ArrayParticleSystems)
+        {
+            _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * deceleration * _AccelerationScale * _Delta, ParticleEmissionMin);
+            particleSystem.emissionRate = _ParticleEmissionValue;
+        }
+
+        PrintHUDInfo();
+    }
+
+    private void AutoPilot()
+    {
+
+        _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
+        EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * _AutoPositionBrake * _Delta, 1.0f);
+
+        foreach (ParticleSystem particleSystem in ArrayParticleSystems)
+        {
+            _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * _AutoPositionBrake * _AccelerationScale * _Delta, ParticleEmissionDefault);
+            particleSystem.emissionRate = _ParticleEmissionValue;
+        }
+        this.transform.position += (this.transform.rotation * new Vector3(0, 0, _Speed) * Time.deltaTime);
+
+        PrintHUDInfo();
+
+    }
+
+    private void SpaceShipRotate()
+    {
+        transform.Rotate(2 * Input.GetAxis("Vertical"), 0, 0, Space.Self);
+
+        transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
+    }
 
     private void SpaceShipMove()
     {
         if (Input.GetAxis("RT") != 0)
         {
-            float acceleration = Input.GetAxis("RT");
-            _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, MaxSpeed);
-            EngineSound.pitch = Mathf.Min(EngineSound.pitch + EngineSound.pitch * acceleration * _AccelerationScale * _Delta, 3.0f);
-
-            foreach (ParticleSystem particleSystem in ArrayParticleSystems)
-            {
-                 _ParticleEmissionValue = Mathf.Min(_ParticleEmissionValue + _ParticleEmissionValue*acceleration*_AccelerationScale*_Delta,ParticleEmissionMax);
-
-                particleSystem.emissionRate = _ParticleEmissionValue;
-            }
+            Accelerate();
         }
         else if (Input.GetAxis("LT") != 0)
         {
-            float deceleration = Input.GetAxis("LT");
-            _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, MinSpeed);
-            EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * deceleration * _AccelerationScale * _Delta, 0.3f);
-
-            foreach (ParticleSystem particleSystem in ArrayParticleSystems)
-            {
-                _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * deceleration * _AccelerationScale * _Delta, ParticleEmissionMin);
-                particleSystem.emissionRate = _ParticleEmissionValue;
-            }
+            Break();
         }
         else
         {
-            _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
-            EngineSound.pitch = Mathf.Max(EngineSound.pitch - EngineSound.pitch * _AutoPositionBrake * _Delta, 1.0f);
-
-            foreach (ParticleSystem particleSystem in ArrayParticleSystems)
-            {
-                _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * _AutoPositionBrake * _AccelerationScale * _Delta, ParticleEmissionDefault);
-                particleSystem.emissionRate = _ParticleEmissionValue;
-            }
+            AutoPilot();
         }
 
-
-        this.transform.position += (this.transform.rotation * new Vector3(0,0,_Speed) * Time.deltaTime);
-
-
-
-        //Quaternion RotationX =  transform.rotation * Quaternion.Euler(Input.GetAxis("Vertical") * 40, 0, 0);
-
-        //Quaternion RotationY = transform.rotation * Quaternion.Euler(0, Input.GetAxis("Horizontal") * 40, 0);
-
-
-        transform.Rotate(2 * Input.GetAxis("Vertical"), 0, 0, Space.Self);
-
-        transform.Rotate(0, 2 * Input.GetAxis("Horizontal"), 0, Space.World);
-
-        // 1 = max Speed;
-        SpeedJaugeUI.fillAmount = _Speed/MaxSpeed;
-        SpeedTextUI.text =  String.Format("{0:0.00}", _Speed);
-
-
+        SpaceShipRotate();
+        
     }
 
-    //private void SpaceShipMoveTest()
-    //{
-    //    _Delta = Time.smoothDeltaTime;
+    private void PrintHUDInfo()
+    {
+        SpeedJaugeUI.fillAmount = _Speed / MaxSpeed;
+        SpeedTextUI.text = String.Format("{0:0.00}", _Speed);
+    }
 
-    //    if (Input.GetAxis("RT") != 0)
-    //    {
-    //        float acceleration = Input.GetAxis("RT");
-    //        _Speed = Mathf.Min(_Speed + _Speed * acceleration * _AccelerationScale * _Delta, (MaxSpeed));
-    //    }
-    //    else if (Input.GetAxis("LT") != 0)
-    //    {
-    //        float deceleration = Input.GetAxis("LT");
-    //        _Speed = Mathf.Max(_Speed - _Speed * deceleration * _AccelerationScale * _Delta, DefaultSpeed);
-    //    }
-    //    else
-    //    {
-    //        _Speed = Mathf.Max(_Speed - _Speed * _AutoPositionBrake * _Delta, DefaultSpeed);
-    //    }
-
-    //    if (Input.GetAxis("Horizontal") < 0.0f)
-    //        _RotSpeed = Mathf.Max(-MaxRotSpeed, _RotSpeed - RotAcceleration * _AccelerationScale * _Delta);
-    //    else if (Input.GetAxis("Horizontal") > 0.0f)
-    //        _RotSpeed = Mathf.Min(MaxRotSpeed, _RotSpeed + RotAcceleration * _AccelerationScale  * _Delta);
-    //    else
-    //        _RotSpeed = Mathf.Lerp(0.0f, _RotSpeed, 1.0f - BankSpring * _Delta);
-
-    //    if (Input.GetAxis("Vertical") < 0.0f)
-    //        _DiveOrientation = Mathf.Max(-MaxDiveSpeed, _DiveOrientation - DiveAcceleration * _AccelerationScale * _Delta);
-    //    else
-    //    {
-    //        if (Input.GetAxis("Vertical") > 0.0f)
-    //            _DiveOrientation = Mathf.Min(MaxDiveSpeed, _DiveOrientation + DiveAcceleration * _AccelerationScale * _Delta);
-    //        else
-    //            _DiveOrientation = Mathf.Lerp(0.0f, _DiveOrientation, 1.0f - DiveSpring * _Delta);
-
-    //        float distanceToGround = Mathf.Clamp01((transform.position.y * 0.25f) - 1.0f);
-    //        _DiveOrientation = Mathf.Lerp(0.0f, _DiveOrientation, distanceToGround);
-    //    }
-
-
-
-    //    accumulatedRotation += _RotSpeed * _Delta;
-    //    accumulatedDive += _DiveOrientation * _Delta;
-
-    //    transform.position += transform.forward * _Speed * _Delta;
-    //    transform.rotation = Quaternion.Euler(_DiveOrientation, accumulatedRotation,
-    //        -_RotSpeed * BankAmplification);
-
-
-
-    //}
     private IEnumerator Fire()
     {
         LaserSound.Play();
@@ -304,14 +275,13 @@ public class SpaceShip : BasePlayer //, IControllable
 
             if (hit.collider.tag == "Cible" && hit.collider != null)
             {
-                //print(hit.collider.name);
+               
                 hasHitTarget = true;
             }
 
         }
         else
         {
-            // laserProjection.transform.position = this.transform.position + this.transform.rotation * new Vector3(0, 0, LaserShootDistance);
             dist = LaserShootDistance;
         }
 
@@ -345,15 +315,15 @@ public class SpaceShip : BasePlayer //, IControllable
 
         if (hasHitTarget)
         {
-            
+
 
             if (hit.collider.gameObject != null)
             {
                 hit.collider.gameObject.GetComponent<Target>().UpdateScore();
                 hit.collider.gameObject.GetComponent<Target>().Explose(transform.position);
             }
-            
-           
+
+
         }
 
         Destroy(rayCastProjection.gameObject);

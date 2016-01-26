@@ -187,7 +187,7 @@ public class SpaceShip : BasePlayer //, IControllable
             _ParticleEmissionValue = Mathf.Max(_ParticleEmissionValue - _ParticleEmissionValue * deceleration * _AccelerationScale * _Delta, ParticleEmissionMin);
             particleSystem.emissionRate = _ParticleEmissionValue;
         }
-
+        this.transform.position += (this.transform.rotation * new Vector3(0, 0, _Speed) * Time.deltaTime);
         PrintHUDInfo();
     }
 

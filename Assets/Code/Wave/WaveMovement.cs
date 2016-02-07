@@ -9,11 +9,11 @@ public class WaveMovement : MonoBehaviour
     public float TimeSpeed = 0.2f;
     public float ScrollSpeed = 1.2f;
 
-    private Renderer render = null;
+    private Renderer _render = null;
 
     void Start()
     {
-        render = GetComponent<Renderer>();
+        _render = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -28,7 +28,7 @@ public class WaveMovement : MonoBehaviour
 
         float offsetX = 0.0f;
         float offsetY = Mathf.Sin(Time.timeSinceLevelLoad * 0.1f);
-        render.material.mainTextureOffset = new Vector2(offsetX, offsetY) * 0.1f;
+        _render.material.mainTextureOffset = new Vector2(offsetX, offsetY) * 0.1f;
 	}
 
 }

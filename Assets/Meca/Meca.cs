@@ -4,8 +4,8 @@ using System.Collections;
 public class Meca : BasePlayer
 {
 
-    private Animator _Animator;
-    public AudioClip _CrackSound;
+    private Animator _animator;
+    public AudioClip CrackSound;
     public AudioClip WilhemScream;
     public AudioClip Breathing;
 
@@ -13,7 +13,7 @@ public class Meca : BasePlayer
 	void Start ()
 	{
         DisableInput();
-	    _Animator = GetComponent<Animator>();
+	    _animator = GetComponent<Animator>();
         
 
 	}
@@ -21,17 +21,17 @@ public class Meca : BasePlayer
 	// Update is called once per frame
 	void Update () {
 
-        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
+        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>().CameraMode != CameraMode.Free)
 	    {
             if (Input.GetKeyUp(KeyCode.JoystickButton0)
-            && !_Animator.GetCurrentAnimatorStateInfo(0).IsName("jump_state"))
+            && !_animator.GetCurrentAnimatorStateInfo(0).IsName("jump_state"))
             {
-                _Animator.SetTrigger("jump_trigger");
+                _animator.SetTrigger("jump_trigger");
             }
 
             CheckChangePlayer();
 	    }
-        else if (_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
+        else if (_camera.GetComponent<CameraFollowPlayer>().CameraMode == CameraMode.Free)
         {
             CheckChangeCamera();
         }
@@ -40,7 +40,7 @@ public class Meca : BasePlayer
 
     public void CrackKnucklesAudio()
     {
-       GetComponent<AudioSource>().clip = _CrackSound;
+       GetComponent<AudioSource>().clip = CrackSound;
        GetComponent<AudioSource>().Play();
     }
 

@@ -5,14 +5,14 @@ using System.Collections;
 public class CameraFollowPlayer : MonoBehaviour
 {
 
-    public BasePlayer _Player;
+    public BasePlayer Player;
     //public Vector3 DistanceCameraFromPlayer;
 
-    public CameraMode _CameraMode; // = CameraMode.Normal;
+    public CameraMode CameraMode; // = CameraMode.Normal;
     public Vector3 FrontCameraPosition;
     public Quaternion FrontCameraRotation;
 
-    private Transform CameraInitial;
+    private Transform _cameraInitial;
 
     //public bool CanRotate = true;
 
@@ -22,9 +22,9 @@ public class CameraFollowPlayer : MonoBehaviour
     void Start()
     {
         //Player.GetComponent<IControllable>().EnableInput();
-        CameraInitial = new GameObject().transform;
-        CameraInitial.localPosition = transform.localPosition;
-        CameraInitial.localRotation = transform.localRotation;
+        _cameraInitial = new GameObject().transform;
+        _cameraInitial.localPosition = transform.localPosition;
+        _cameraInitial.localRotation = transform.localRotation;
 
 
 
@@ -32,8 +32,8 @@ public class CameraFollowPlayer : MonoBehaviour
 
     public void ResetCameraPosition()
     {
-        transform.localPosition = CameraInitial.localPosition;
-        transform.localRotation = CameraInitial.localRotation;
+        transform.localPosition = _cameraInitial.localPosition;
+        transform.localRotation = _cameraInitial.localRotation;
     }
 
     // Update is called once per frame
@@ -51,9 +51,9 @@ public class CameraFollowPlayer : MonoBehaviour
         //transform.RotateAround(_Player.transform.position,Vector3.up,2);
 
 
-        if (_Player.isInputEnabled())
+        if (Player.isInputEnabled())
         {
-            switch (_CameraMode)
+            switch (CameraMode)
             {
                 case CameraMode.Normal:
                     {
@@ -64,25 +64,25 @@ public class CameraFollowPlayer : MonoBehaviour
                         }
                         else if (Input.GetKeyUp(KeyCode.JoystickButton9))
                         {
-                            transform.localPosition = CameraInitial.localPosition;
-                            transform.localRotation = CameraInitial.localRotation;
+                            transform.localPosition = _cameraInitial.localPosition;
+                            transform.localRotation = _cameraInitial.localRotation;
 
                         }
                         else if (Input.GetAxis("RightH") != 0 || Input.GetAxis("RightV") != 0)
                         {
 
-                            transform.RotateAround(_Player.transform.position, _Player.transform.up, Input.GetAxis("RightH") * 2);
-                            transform.RotateAround(_Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
+                            transform.RotateAround(Player.transform.position, Player.transform.up, Input.GetAxis("RightH") * 2);
+                            transform.RotateAround(Player.transform.position, transform.right, Input.GetAxis("RightV") * 2);
                         }
                         else
                         {
                             Transform from = transform;
 
 
-                            transform.localPosition = Vector3.Lerp(from.localPosition, CameraInitial.localPosition, Time.deltaTime * 10.0f);
+                            transform.localPosition = Vector3.Lerp(from.localPosition, _cameraInitial.localPosition, Time.deltaTime * 10.0f);
 
                             transform.localRotation = Quaternion.Lerp(from.localRotation,
-                                CameraInitial.localRotation, Time.deltaTime * 10.0f);
+                                _cameraInitial.localRotation, Time.deltaTime * 10.0f);
                         }
 
 

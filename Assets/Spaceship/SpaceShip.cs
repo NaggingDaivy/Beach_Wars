@@ -41,7 +41,7 @@ public class SpaceShip : BasePlayer //, IControllable
     public Transform[] LasersPositions;
     public AudioSource LaserSound;
     public AudioSource EngineSound;
-    public SpaceShipMode _SpaceshipMode = SpaceShipMode.Levitate;
+    public SpaceShipMode SpaceshipMode = SpaceShipMode.Levitate;
 
     public Transform PointBeachRotate;
 
@@ -82,7 +82,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
 
 
-        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>()._CameraMode != CameraMode.Free)
+        if (_inputEnabled && _camera.GetComponent<CameraFollowPlayer>().CameraMode != CameraMode.Free)
         {
             if (!EngineSound.isPlaying)
                 EngineSound.Play();
@@ -118,7 +118,7 @@ public class SpaceShip : BasePlayer //, IControllable
 
             //}
         }
-        else if (_camera.GetComponent<CameraFollowPlayer>()._CameraMode == CameraMode.Free)
+        else if (_camera.GetComponent<CameraFollowPlayer>().CameraMode == CameraMode.Free)
         {
             _camera.transform.parent = null;
             EngineSound.Stop();

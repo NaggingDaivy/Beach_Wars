@@ -8,7 +8,7 @@ public class BasePlayer : MonoBehaviour
     protected bool _inputEnabled = false;
     public Camera _camera;
     private CameraMode _previousCameraMode;
-    public GameObject _HUDPlayer;
+    public GameObject HUDPlayer;
 
 
 
@@ -23,8 +23,8 @@ public class BasePlayer : MonoBehaviour
         _inputEnabled = true;
         _camera.enabled = true;
         _camera.GetComponent<AudioListener>().enabled = true;
-        if(_HUDPlayer != null)
-            _HUDPlayer.SetActive(true);
+        if(HUDPlayer != null)
+            HUDPlayer.SetActive(true);
 
 
     }
@@ -34,8 +34,8 @@ public class BasePlayer : MonoBehaviour
         _inputEnabled = false;
         _camera.enabled = false;
         _camera.GetComponent<AudioListener>().enabled = false;
-        if (_HUDPlayer != null)
-            _HUDPlayer.SetActive(false);
+        if (HUDPlayer != null)
+            HUDPlayer.SetActive(false);
 
 
     }
@@ -78,8 +78,8 @@ public class BasePlayer : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.JoystickButton6)) // Back
         {
             //DisableInput();
-            _previousCameraMode = _camera.GetComponent<CameraFollowPlayer>()._CameraMode;
-            _camera.GetComponent<CameraFollowPlayer>()._CameraMode = CameraMode.Free;
+            _previousCameraMode = _camera.GetComponent<CameraFollowPlayer>().CameraMode;
+            _camera.GetComponent<CameraFollowPlayer>().CameraMode = CameraMode.Free;
 
 
 
@@ -96,7 +96,7 @@ public class BasePlayer : MonoBehaviour
         {
             _camera.transform.parent = this.transform;
             _camera.GetComponent<CameraFollowPlayer>().ResetCameraPosition();
-            _camera.GetComponent<CameraFollowPlayer>()._CameraMode = _previousCameraMode;
+            _camera.GetComponent<CameraFollowPlayer>().CameraMode = _previousCameraMode;
         }
             
 
